@@ -83,30 +83,44 @@ def nn(point,root,best_distance,best_node): #nearest_neighbour
         best_node,best_distance=nn(point,otherBranch,best_distance,best_node)    
 
     return best_node,best_distance
+
+
        
 def knn(point,root,n):
     if root==None:
         return None
     S=[]
-    Q=deque()
+    Q=[]
+    aux=[]
     S.append(root)
     while S:
         node=S.pop()
         d=distance(point,node)
         dim=node.dim
 
-        if len(Q)<=n or distance(Q[-1].point,node):  ##guardar las cagas de distances
-            return None
-        ##tratar de insertar node.p en N 
-	    #if point[dim] < node.point[dim]:
-        #    S.append(root.left_child) #verificar distancia
-        #    if abs(node.point[dim]-point[dim]) < distance(Q[-1].point,node):
-        #        S.append(root.right_child) #sale primero
-        #else:
-        #    S.append(root.right_child) #verificar distancia
-        #    if abs(node.point[dim]-point[dim]) < distance(Q[-1].point,node):
-        #        S.append(root.left_child) #sale primero
-#
+
+        if len(Q)<n :  ##guardar las cagas de distances distance(point,Q[-1])<d
+            aux.append(node)
+            aux.append(d)
+            Q.append(aux)
+            Q.sort(key=operator.itemgetter(1))
+            aux.clear()
+        elif len(Q)==n and Q[-1][1]>d:
+            Q.pop()
+            aux.append(node)
+            aux.append(d)
+            Q.append(aux)
+            Q.sort(key=operator.itemgetter(1))
+            aux.clear()
+        if point[dim] < node.point[dim]:
+            S.append(root.left_child) #verificar distancia
+            if abs(node.point[dim]-point[dim]) < distance(Q[0].point,node):
+                S.append(root.right_child)#sale primero
+        else:
+            S.append(root.right_child) #verificar distancia
+            if abs(node.point[dim]-point[dim]) < distance(Q[0].point,node):
+                S.append(root.left_child) #sale primero
+
     return Q  
 
 points=[[3,6],[17,15],[13,15],[6,12],[9,1],[2,7],[10,19]]
@@ -119,9 +133,13 @@ for p in points:
 point=[4,3]
 point2=[6,7]
 
-Q=deque()
-Q.append(4)
-Q.append(5)
+Q=[]
+aux=["123",3]
+aux2=["123123",4]
+aux3=["asdf",5]
+Q.append(aux)
+Q.append(aux3)
+Q.append(aux2)
+Q.sort(key=operator.itemgetter(1))
 
-
-print (len(Q))
+print (Q)
