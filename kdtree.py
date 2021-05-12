@@ -87,11 +87,9 @@ def knn(point,kdtree,n): #k-nearest neighbour
         return None
     S=[]
     Q=[]
-    S.append(root)
+    S.append(kdtree)
     while S:
         node=S.pop()
-        if (node==None):
-            pass
         d=distance(point,node)
         dim=node.dim
         if point[dim] < node.point[dim]:
@@ -123,17 +121,14 @@ def knn(point,kdtree,n): #k-nearest neighbour
 points=[[3,6],[17,15],[13,15],[6,12],[9,1],[2,7],[10,19]]
 points2=[[2,3],[5,4],[9,6],[4,7],[8,1],[7,2]]
 root2=make_kdtree(points2)
-root=None
-
-for p in points:
-    root= insert(p,root)
 point=[4,3]
 point2=[6,7]
 
-m=knn(point,root2,3)
+neighbours=4
+m=knn(point2,root2,neighbours)
 
 p=0
-while p<3:
+while p<neighbours:
     print (m[p][0].point)
     p+=1
 
