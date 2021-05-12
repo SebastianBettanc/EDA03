@@ -7,6 +7,6 @@ Instrucciones para instalar
 
 Tener instalado python 3.6; 3.7 o 3.8
 
-Correr el archivo EDA03.py
+Correr el archivo kdtree.py
 
 VIDEO EXPLICATIVO !!! = ""
