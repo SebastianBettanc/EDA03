@@ -1,5 +1,3 @@
-from collections import deque
-import heapq
 import math as mt
 import operator
 
@@ -84,42 +82,41 @@ def nn(point,root,best_distance,best_node): #nearest_neighbour
 
     return best_node,best_distance
 
-
-       
-def knn(point,root,n):
-    if root==None:
+def knn(point,kdtree,n): #k-nearest neighbour
+    if kdtree==None:
         return None
     S=[]
     Q=[]
-    aux=[]
     S.append(root)
     while S:
         node=S.pop()
+        if (node==None):
+            pass
         d=distance(point,node)
         dim=node.dim
-
-
-        if len(Q)<n :  ##guardar las cagas de distances distance(point,Q[-1])<d
-            aux.append(node)
-            aux.append(d)
-            Q.append(aux)
+        if point[dim] < node.point[dim]:
+            nextBranch=node.left_child
+            otherBranch=node.right_child    
+        else:
+            nextBranch=node.right_child
+            otherBranch=node.left_child 
+        if len(Q)<n :  #
+            Q.append(tuple((node,d)))
             Q.sort(key=operator.itemgetter(1))
-            aux.clear()
+            if otherBranch is not None:
+                S.append(otherBranch)
+            if nextBranch is not None:    
+                S.append(nextBranch)
         elif len(Q)==n and Q[-1][1]>d:
             Q.pop()
-            aux.append(node)
-            aux.append(d)
-            Q.append(aux)
+            Q.append(tuple((node,d)))
             Q.sort(key=operator.itemgetter(1))
-            aux.clear()
-        if point[dim] < node.point[dim]:
-            S.append(root.left_child) #verificar distancia
-            if abs(node.point[dim]-point[dim]) < distance(Q[0].point,node):
-                S.append(root.right_child)#sale primero
         else:
-            S.append(root.right_child) #verificar distancia
-            if abs(node.point[dim]-point[dim]) < distance(Q[0].point,node):
-                S.append(root.left_child) #sale primero
+            if nextBranch is not None:
+                S.append(nextBranch)
+            if abs(node.point[dim]-point[dim]) < Q[-1][1]:
+                if otherBranch is not None:
+                    S.append(otherBranch)
 
     return Q  
 
@@ -133,13 +130,10 @@ for p in points:
 point=[4,3]
 point2=[6,7]
 
-Q=[]
-aux=["123",3]
-aux2=["123123",4]
-aux3=["asdf",5]
-Q.append(aux)
-Q.append(aux3)
-Q.append(aux2)
-Q.sort(key=operator.itemgetter(1))
+m=knn(point,root2,3)
 
-print (Q)
+p=0
+while p<3:
+    print (m[p][0].point)
+    p+=1
+
