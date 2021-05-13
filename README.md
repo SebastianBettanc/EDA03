@@ -9,4 +9,9 @@ Tener instalado python 3.6; 3.7 o 3.8
 
 Correr el archivo kdtree.py
 
-VIDEO EXPLICATIVO !!! = ""
+VIDEO EXPLICATIVO !!! = https://youtu.be/UgMCbFao5hY
+
+
+
+Coevaluacion 
+Sebastian :+0
