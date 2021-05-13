@@ -36,7 +36,7 @@ Y en forma cartesiana:
 
 ![Kdtree_2d svg](https://user-images.githubusercontent.com/82010968/118083751-71722a00-b38d-11eb-91ef-7dcf2d518f05.png)
 
-
+-----------------------------------------------------------------------------------
 
 Funcion nearest neighbourt (vecino mas cercano al punto):
 
@@ -69,7 +69,7 @@ Una vez que llegamos a un nodo vacio , simplemente retornamos el mejor nodo y di
 
 ![return_nn](https://user-images.githubusercontent.com/82010968/118109787-a000fc80-b3af-11eb-95ae-ce7a5786cdea.png)
 
-
+------------------------------------------------------------------------------------
 Funcion  K-nearest neighbour
 
 Es similar a la funcion Nearest Neighbour(nn) en cuanto a funcionalidad
