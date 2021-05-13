@@ -85,16 +85,17 @@ Mientras el stack no este vacio vamos chequeando que:
 
 • Calculamos la distance euclidiana entre el punto y el nodo
 
---IMAGEN
+![distance_knn](https://user-images.githubusercontent.com/82010968/118110323-451bd500-b3b0-11eb-8c96-1122a16cf440.png)
 
 • Al igual que en nn vamos guardando las hoja mas prometedora y la posible dependiendo de si la coordenada x o y del punto es menor o mayor que la coordenada x,y del nodo
 
---IMAGEN
+![branches_knn](https://user-images.githubusercontent.com/82010968/118110343-4baa4c80-b3b0-11eb-9a8c-8d725cdc912b.png)
 
 • Si la cantidad de datos de la lista Q es menor o igual a n(cantidad de vecinos), entonces agregamos el nodo a la lista Q, reordenamos la lista y agregamos al stack las 2
 hojas
 
---IMAGEN
+![Q_not_full](https://user-images.githubusercontent.com/82010968/118110378-5664e180-b3b0-11eb-818a-d6de9151052e.png)
+
 
 • Si la lista Q se encuentra llena y la distancia del nodo con el punto , es mejor que la distancia mayor guardada en la lista Q , (ulitmo dato de la lista contiene el vecino
 con la distancia mas larga), se borra el ultimo dato de la lista Q , se agrega el nuevo nodo a Q y se reordena
