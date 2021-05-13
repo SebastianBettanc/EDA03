@@ -71,7 +71,14 @@ Una vez que llegamos a un nodo vacio , simplemente retornamos el mejor nodo y di
 --IMAGEN
 
 
-Funcion  K-neares neighbour
+Funcion  K-nearest neighbour
+
+Es similar a la funcion Nearest Neighbour en cuanto a funcionalidad
+
+Primero creamos una Stack S y una lista ordenada Q; El stack contendra nodos "posibles" que podrian ser vecinos  , mientras que la lista Q guarda los n mejores nodos (los 
+mas cercanos al punto p por distancia)
+
+
 
 
 
