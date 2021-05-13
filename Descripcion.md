@@ -39,3 +39,5 @@ Y en forma cartesiana:
 
 
 
+Funcion nearest neighbourt (vecino mas cercano al punto)
+
