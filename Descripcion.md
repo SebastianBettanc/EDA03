@@ -132,6 +132,12 @@ el stack
 
 • Repetimos el proceso hasta que el stack este vacio
 
+------------------------------------------------------------------------------------
+
+Ejecucion del programa:
+
+
+![ejecucion](https://user-images.githubusercontent.com/82010968/118112454-03d8f480-b3b3-11eb-8dd4-7ac09ac33991.png)
 
 
 
