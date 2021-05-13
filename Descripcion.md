@@ -1,4 +1,3 @@
-
 Explicación funciones kd-tree
 
 El árbol kd-tree es una estructura de datos que particiona el espacio, para organizar los puntos en este.
@@ -50,26 +49,25 @@ Primero calculamos la distancia del nodo actual el siguiente
 
 Si la distancia calculada anteriormente es menor a la mejor_distancia , entonces mejor_distancia pasa a ser la nueva distancia calculada y ademas se guarda el nodo correspodiente a esta
 
---IMAGEN
+![best_distance](https://user-images.githubusercontent.com/82010968/118109098-beb2c380-b3ae-11eb-82d6-8fe89997bdcf.png)
 
 Si la coordenada x o y (depende de la dimension en la que estamos, se parte con x luego y y asi sucesivamente), del punto es menor que la coordenada x o y del nodo entonces
 guardamos la hoja mas prometedora (hijo izquierdo) y la hoja posible (hijo derecho), la hoja mas prometedora y la posible se invierten si el punto es mayor al nodo x,y.
 
-
---IMAGEN
+![branches](https://user-images.githubusercontent.com/82010968/118109373-181af280-b3af-11eb-93a5-f539b83ee68f.png)
 
 Recorremos hacia la hoja prometedora y repetimos el proceso en el paso 1
 
---IMAGEN
+![best_branch](https://user-images.githubusercontent.com/82010968/118109746-94153a80-b3af-11eb-90f8-4896171f89bb.png)
 
 Recorremos hacia la hoja posible solo si se cumple que la diferencia entre las coordenadas x o y entre el punto y el nodo es menor a la mejor distancia guardada, en caso 
 contrario no recorremos la hoja posible , ya que no existiran nodos con menor distancia a la mejor guardada
 
---IMAGEN
+![other_branch](https://user-images.githubusercontent.com/82010968/118109769-9b3c4880-b3af-11eb-8245-e9cbb8d2719e.png)
 
 Una vez que llegamos a un nodo vacio , simplemente retornamos el mejor nodo y distancia guardados
 
---IMAGEN
+![return_nn](https://user-images.githubusercontent.com/82010968/118109787-a000fc80-b3af-11eb-95ae-ce7a5786cdea.png)
 
 
 Funcion  K-nearest neighbour
