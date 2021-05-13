@@ -45,7 +45,8 @@ Para encontrar el vecino mas cercano es similar a la busqueda de 1 nodo.
 
 Primero calculamos la distancia del nodo actual el siguiente
 
---IMAGEN
+![funcion_distancia](https://user-images.githubusercontent.com/82010968/118108744-5cf25980-b3ae-11eb-93b2-b8be9c13124c.png)
+
 
 Si la distancia calculada anteriormente es menor a la mejor_distancia , entonces mejor_distancia pasa a ser la nueva distancia calculada y ademas se guarda el nodo correspodiente a esta
 
