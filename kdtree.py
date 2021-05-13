@@ -30,10 +30,10 @@ def make_kdtree(points,depth : int=0):
 
 def insert(point,root,depth: int=0):
 
-    dim = depth % k
-    if not root:
+    dim = depth % k #dimension en que se encuentra
+    if not root: #Si se encuentra vacio el nodo , retorna un nuevo nodo sin hijos
         return Node(point,None,None,dim)  
-    if point[dim] < root.point[dim]:
+    if point[dim] < root.point[dim]:#Si la coordenada x o y del punto es menor que el punto del nodo en x o y, se mueve hacia el hijo izquierdo , caso contrario hacia el hijo derecho y ejecuta la funcion denuevo
         root.left_child= insert(point, root.left_child,depth+1)
     else:
         root.right_child= insert(point, root.right_child,depth+1) 
@@ -42,17 +42,17 @@ def insert(point,root,depth: int=0):
 
 def search(point,root,depth : int=0):
 
-    if not root:
+    if not root: #Si llega a un nodo vacio retorna falso
         return False
-    if root.point==point:
+    if root.point==point: #Si los puntos del nodo , equivalen al punto que buscamos retorna true
         return True
-    dim = depth % k
-    if point[dim] < root.point[dim]:
+    dim = depth % k #dimension en que se encuentra
+    if point[dim] < root.point[dim]:#Si la coordenada x o y del punto es menor que el punto del nodo en x o y, se mueve hacia el hijo izquierdo , caso contrario hacia el hijo derecho y ejecuta la funcion denuevo
         return search(point, root.left_child,depth+1)
     else:
         return search(point, root.right_child,depth+1)
  
-def distance(point,node):
+def distance(point,node): #distancia euclidiana entre el punto y el punto del nodo
     suma=0
     for i in range(len(point)):
         suma+=(point[i]-node.point[i])**2
@@ -62,64 +62,67 @@ def distance(point,node):
 
 def nn(point,root,best_distance,best_node): #nearest_neighbour
 
-    if not root:
+    if not root: #Si llega a un nodo vacio, retorna el mejor nodo y mejor distancia guardadas
         return best_node,best_distance
-    d = distance(point,root)
-    dim=root.dim
+    d = distance(point,root) #distancia entre el punto y el nodo actual
+    dim=root.dim #dimension actual del kd-tree
     if d<best_distance:
         best_node=root
         best_distance=d
 
-    if point[dim]<root.point[dim]:
-        nextBranch=root.left_child
-        otherBranch=root.right_child
+    if point[dim]<root.point[dim]: #Si la coordenada x o y del punto es menor que el punto del nodo en x o y
+        nextBranch=root.left_child  #guarda la hoja mas prometedora (hijo izquierdo), y la posible (hijo derecho)
+        otherBranch=root.right_child 
     else:
         nextBranch=root.right_child
         otherBranch=root.left_child
-    best_node,best_distance=nn(point,nextBranch,best_distance,best_node)
+    best_node,best_distance=nn(point,nextBranch,best_distance,best_node) #Ejecuta la funcion de nuevo y se mueve hacia la hoja mas prometedora
 
-    if abs(root.point[dim] -point[dim]) < best_distance:
-        best_node,best_distance=nn(point,otherBranch,best_distance,best_node)    
+    if abs(root.point[dim] -point[dim]) < best_distance: #Ejecuta la funcion de nuevo y se mueve hacia la posible hoja solo si la diferencia entre las coordenadas x o y
+        best_node,best_distance=nn(point,otherBranch,best_distance,best_node) #entre el punto y el punto del nodo es menor a la mejor distancia   
 
     return best_node,best_distance
 
 def knn(point,kdtree,n): #k-nearest neighbour
-    if kdtree==None:
+    if kdtree==None or n<1: #Si el arbol se encuentra vacio , o existe una cantidad de vecinos invalida (0 o negativo) retorna null
         return None
     S=[] #StaCK que contiene nodos prometedores a visitar
-    Q=[] #Lista ordenada que contiene los nodos   
+    Q=[] #Lista ordenada que contiene a los ultimos n nodos mas cercanos al punto ordenados por distancia   
     S.append(kdtree)
     while S:
         node=S.pop()
         d=distance(point,node)
         dim=node.dim
-        if point[dim] < node.point[dim]:
+        if point[dim] < node.point[dim]: #Lo mismo que en el algoritmo nn , se va guardando la hoja prometedora y la posible
             nextBranch=node.left_child
             otherBranch=node.right_child    
         else:
             nextBranch=node.right_child
             otherBranch=node.left_child 
-        if len(Q)<n :  #
+        if len(Q)<n :  #Si el tama;o de la lista es menor a n se guardara cualquier nodo que se le inserte
             Q.append(tuple((node,d)))
             Q.sort(key=operator.itemgetter(1))
             if otherBranch is not None:
-                S.append(otherBranch)
+                S.append(otherBranch)#Como el tama;o de lista es menor a n se agregan todas las hojas al stack
             if nextBranch is not None:    
                 S.append(nextBranch)
-        elif len(Q)==n and Q[-1][1]>d:
-            Q.pop()
+        elif len(Q)==n and Q[-1][1]>d: #Si la lista ordenada ya se encuentra llena pero se encuentra un nodo , cuya distancia hacia el punto es menor que
+            Q.pop()                    #la distancia mayor guardada en Q, entonces se elimina la distancia mas grande de Q y se inserta el nuevo nodo en la lista  
             Q.append(tuple((node,d)))
             Q.sort(key=operator.itemgetter(1))
-        else:
-            if nextBranch is not None:
+        else:   #Si la lista ordenada ya se encuentra llena pero la distancia del nodo no se satisface, entonces se guarda la hoja prometedora en el stack para analizarla en el siguiente ciclo
+            if nextBranch is not None: 
                 S.append(nextBranch)
-            if abs(node.point[dim]-point[dim]) < Q[-1][1]:
-                if otherBranch is not None:
+            if abs(node.point[dim]-point[dim]) < Q[-1][1]: #Lo mismo que en nn ,guarda en el stack la posible hoja solo si la diferencia entre las coordenadas x o y
+                if otherBranch is not None:                #entre el punto y el punto del nodo (distancia mayor de la lista Q), es menor a la mejor distancia      
                     S.append(otherBranch)
 
     return Q  
 
-points=[[3,6],[17,15],[13,15],[6,12],[9,1],[2,7],[10,19]]
+
+###MAIN################################
+
+points=[(3,6),(17,15),(13,15),(6,12),(9,1),(2,7),(10,19)]
 
 points2=[(2,3),(5,4),(9,6),(4,7),(8,1),(7,2)]
 root=make_kdtree(points2)
