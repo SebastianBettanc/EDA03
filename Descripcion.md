@@ -38,6 +38,28 @@ Y en forma cartesiana:
 
 -----------------------------------------------------------------------------------
 
+Funcion search (busca si el punto dado existe o no el kd-tree):
+
+La funcion search es una funcion recursiva , llegara a falso en caso de llegar a un nodo nulo (esto pasara si ningun nodo cumple la condicion), o sera true si el nodo current 
+es igual al punto buscado
+
+![search_returns](https://user-images.githubusercontent.com/82010968/118112089-86ad7f80-b3b2-11eb-9ed7-168cff49d2e1.png)
+
+Para ir recorriendo los nodos del arbol primero chequeamos si la coordenada x (x o y, en este caso es X) del punto es menor que la coordenada x del nodo, en caso de ser menor nos movemos al hijo izquierdo
+y ejecutamos la funcion denuevo donde ahora root sera root.left_child, para el caso contrario (es mayor) sera root.right_child
+
+![search_next](https://user-images.githubusercontent.com/82010968/118112130-962cc880-b3b2-11eb-9794-6a2a778b4062.png)
+
+En la siguiente iteracion sera lo mismo de los pasos anteriores pero ahora coompara con la coordenada y en caso de no cumplirse las condiciones para terminar la funcion
+
+*La funcion insert es exactamente igual a la funcion search con la diferencia que la condicion de salida de la funcion solo retorna cuando se llega a un nodo vacio y este retorna
+el ultimo nodo
+
+![return_insert](https://user-images.githubusercontent.com/82010968/118112169-a3e24e00-b3b2-11eb-8349-ecce769f72b2.png)
+
+
+---------------------------------------------------------------------------------------------------
+
 Funcion nearest neighbourt (vecino mas cercano al punto):
 
 Para encontrar el vecino mas cercano es similar a la busqueda de 1 nodo.
