@@ -100,12 +100,13 @@ hojas
 • Si la lista Q se encuentra llena y la distancia del nodo con el punto , es mejor que la distancia mayor guardada en la lista Q , (ulitmo dato de la lista contiene el vecino
 con la distancia mas larga), se borra el ultimo dato de la lista Q , se agrega el nuevo nodo a Q y se reordena
 
---IMAGEN
+![Q_full_distance_true](https://user-images.githubusercontent.com/82010968/118110649-ac398980-b3b0-11eb-8bf6-cf574a913de9.png)
+
 
 • En caso de que la lista Q este llena pero el nodo no cumple con la condicion de la distancia previa, entonces agregamos la hoja prometedora al stack ; Agregamos la hoja posible al stack solo si la diferencia de las coordenadas x o y entre el punto y el nodo , es menor a la distancia peor de la lista Q , entonces agregamos la hoja posible en
 el stack
 
---IMAGEN
+![Q_full](https://user-images.githubusercontent.com/82010968/118110669-b3f92e00-b3b0-11eb-95b3-a1c846d17773.png)
 
 • Repetimos el proceso hasta que el stack este vacio
 
