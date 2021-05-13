@@ -6,21 +6,22 @@ k=2
 
 class Node:
     def __init__(self,point,left_child,right_child,dim):
-        self.point=point
+        self.point=point    
         self.left_child=left_child
         self.right_child=right_child
         self.dim=dim
 
 def make_kdtree(points,depth : int=0):
 
-   if not points:
+    if not points:
        return None
-   dim= depth % k   #en que dimension se encuentra 
 
-   points.sort(key=operator.itemgetter(dim))#ordena la lista de puntos de menor a mayor segun su dimension
-   median=len(points)//2 # division entera
+    dim= depth % k   #en que dimension se encuentra 
+
+    points.sort(key=operator.itemgetter(dim))#ordena la lista de puntos de menor a mayor segun su dimension
+    median=len(points)//2 # division entera
     
-   return Node(
+    return Node(
        points[median],
        make_kdtree(points[0:median],depth+1), #left_child
        make_kdtree(points[median+ 1:],depth+1), #right_child
@@ -85,8 +86,8 @@ def nn(point,root,best_distance,best_node): #nearest_neighbour
 def knn(point,kdtree,n): #k-nearest neighbour
     if kdtree==None:
         return None
-    S=[]
-    Q=[]
+    S=[] #StaCK que contiene nodos prometedores a visitar
+    Q=[] #Lista ordenada que contiene los nodos   
     S.append(kdtree)
     while S:
         node=S.pop()
@@ -119,16 +120,32 @@ def knn(point,kdtree,n): #k-nearest neighbour
     return Q  
 
 points=[[3,6],[17,15],[13,15],[6,12],[9,1],[2,7],[10,19]]
-points2=[[2,3],[5,4],[9,6],[4,7],[8,1],[7,2]]
-root2=make_kdtree(points2)
-point=[4,3]
-point2=[6,7]
 
-neighbours=4
-m=knn(point2,root2,neighbours)
+points2=[(2,3),(5,4),(9,6),(4,7),(8,1),(7,2)]
+root=make_kdtree(points2)
+root2=None
 
+for p in points2:
+    root2=insert(p,root2)
+
+
+point=(4,3)
+point2=(6,7)
+point3=(2,3)
+
+neighbours=3
+print ("Search Results")
+print (search(point,root))
+print (search(point3,root))
+print("")
+
+Neighboorhood=knn(point,root,neighbours)
+Neighboor=nn(point,root,mt.inf,None)
+
+print(Neighboor[0].point)
+print("Neighboorss")
 p=0
 while p<neighbours:
-    print (m[p][0].point)
+    print (Neighboorhood[p][0].point)
     p+=1
 
