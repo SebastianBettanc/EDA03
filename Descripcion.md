@@ -73,11 +73,41 @@ Una vez que llegamos a un nodo vacio , simplemente retornamos el mejor nodo y di
 
 Funcion  K-nearest neighbour
 
-Es similar a la funcion Nearest Neighbour en cuanto a funcionalidad
+Es similar a la funcion Nearest Neighbour(nn) en cuanto a funcionalidad
 
 Primero creamos una Stack S y una lista ordenada Q; El stack contendra nodos "posibles" que podrian ser vecinos  , mientras que la lista Q guarda los n mejores nodos (los 
 mas cercanos al punto p por distancia)
 
+Insertamos el nodo root en el stack.
+
+Mientras el stack no este vacio vamos chequeando que:
+
+• Sacamos el ultimo nodo del stack y lo almacenamos en una variable.
+
+• Calculamos la distance euclidiana entre el punto y el nodo
+
+--IMAGEN
+
+• Al igual que en nn vamos guardando las hoja mas prometedora y la posible dependiendo de si la coordenada x o y del punto es menor o mayor que la coordenada x,y del nodo
+
+--IMAGEN
+
+• Si la cantidad de datos de la lista Q es menor o igual a n(cantidad de vecinos), entonces agregamos el nodo a la lista Q, reordenamos la lista y agregamos al stack las 2
+hojas
+
+--IMAGEN
+
+• Si la lista Q se encuentra llena y la distancia del nodo con el punto , es mejor que la distancia mayor guardada en la lista Q , (ulitmo dato de la lista contiene el vecino
+con la distancia mas larga), se borra el ultimo dato de la lista Q , se agrega el nuevo nodo a Q y se reordena
+
+--IMAGEN
+
+• En caso de que la lista Q este llena pero el nodo no cumple con la condicion de la distancia previa, entonces agregamos la hoja prometedora al stack ; Agregamos la hoja posible al stack solo si la diferencia de las coordenadas x o y entre el punto y el nodo , es menor a la distancia peor de la lista Q , entonces agregamos la hoja posible en
+el stack
+
+--IMAGEN
+
+• Repetimos el proceso hasta que el stack este vacio
 
 
 
