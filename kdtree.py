@@ -2,14 +2,18 @@ import math as mt
 import operator
 
 
-k=2
+k=3
 
 class Node:
-    def __init__(self,point,left_child,right_child,dim):
+    def __init__(self,point,left_child,right_child,dim): #,data
+        #self.data=data
         self.point=point    
         self.left_child=left_child
         self.right_child=right_child
         self.dim=dim
+    def get_id(L):
+        self.point=L[0]
+        return None
 
 def make_kdtree(points,depth : int=0):
 
@@ -106,11 +110,13 @@ def knn(point,kdtree,n): #k-nearest neighbour
                 S.append(otherBranch)#Como el tama;o de lista es menor a n se agregan todas las hojas al stack
             if nextBranch is not None:    
                 S.append(nextBranch)
-        elif len(Q)==n and Q[-1][1]>d: #Si la lista ordenada ya se encuentra llena pero se encuentra un nodo , cuya distancia hacia el punto es menor que
-            Q.pop()                    #la distancia mayor guardada en Q, entonces se elimina la distancia mas grande de Q y se inserta el nuevo nodo en la lista  
-            Q.append(tuple((node,d)))
-            Q.sort(key=operator.itemgetter(1))
-        else:   #Si la lista ordenada ya se encuentra llena pero la distancia del nodo no se satisface, entonces se guarda la hoja prometedora en el stack para analizarla en el siguiente ciclo
+        #elif len(Q)==n and Q[-1][1]>d: #Si la lista ordenada ya se encuentra llena pero se encuentra un nodo , cuya distancia hacia el punto es menor que
+
+        else:
+            if Q[-1][1]>d:     
+                Q.pop()                    #la distancia mayor guardada en Q, entonces se elimina la distancia mas grande de Q y se inserta el nuevo nodo en la lista  
+                Q.append(tuple((node,d)))
+                Q.sort(key=operator.itemgetter(1)) #Si la lista ordenada ya se encuentra llena pero la distancia del nodo no se satisface, entonces se guarda la hoja prometedora en el stack para analizarla en el siguiente ciclo
             if nextBranch is not None: 
                 S.append(nextBranch)
             if abs(node.point[dim]-point[dim]) < Q[-1][1]: #Lo mismo que en nn ,guarda en el stack la posible hoja solo si la diferencia entre las coordenadas x o y
@@ -124,7 +130,7 @@ def knn(point,kdtree,n): #k-nearest neighbour
 
 points=[(3,6),(17,15),(13,15),(6,12),(9,1),(2,7),(10,19)]
 
-points2=[(2,3),(5,4),(9,6),(4,7),(8,1),(7,2)]
+points2=[(2,3,4),(5,4,6),(9,6,7),(4,7,8),(8,1,9),(7,2,10)]
 root=make_kdtree(points2)
 root2=None
 
@@ -132,9 +138,9 @@ for p in points2:
     root2=insert(p,root2)
 
 
-point=(4,3)
-point2=(6,7)
-point3=(2,3)
+point=(4,3,1)
+point2=(9,6,7)
+point3=(2,3,4)
 
 neighbours=3
 print ("Search Results")
