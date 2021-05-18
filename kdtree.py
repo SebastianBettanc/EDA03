@@ -11,9 +11,21 @@ class Node:
         self.left_child=left_child
         self.right_child=right_child
         self.dim=dim
-    def get_id(L):
-        self.point=L[0]
+    def get_id(self):
+        #
+        point()
         return None
+def transforma_data(line):
+    L=list()
+    
+
+
+    return L
+
+
+
+
+
 
 def make_kdtree(points,depth : int=0):
 
