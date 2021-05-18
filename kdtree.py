@@ -1,6 +1,6 @@
 import math as mt
 import operator
-
+import leercsv
 
 k=3
 
@@ -143,6 +143,14 @@ def knn(point,kdtree,n): #k-nearest neighbour
 points=[(3,6),(17,15),(13,15),(6,12),(9,1),(2,7),(10,19)]
 
 points2=[(2,3,4),(5,4,6),(9,6,7),(4,7,8),(8,1,9),(7,2,10)]
+
+
+
+archive="Desafio3.csv"
+movies=leercsv.read_dataset(archive)
+
+
+
 root=make_kdtree(points2)
 root2=None
 
