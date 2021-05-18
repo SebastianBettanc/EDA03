@@ -5,12 +5,13 @@ import leercsv
 k=3
 
 class Node:
-    def __init__(self,point,left_child,right_child,dim): #,data
+    def __init__(self,point,left_child,right_child,dim,info): #,data
         #self.data=data
         self.point=point    
         self.left_child=left_child
         self.right_child=right_child
         self.dim=dim
+        self.info=info
     def get_id(self):
         #
         point()
@@ -36,25 +37,36 @@ def make_kdtree(points,depth : int=0):
 
     points.sort(key=operator.itemgetter(dim))#ordena la lista de puntos de menor a mayor segun su dimension
     median=len(points)//2 # division entera
-    
-    return Node(
-       points[median],
-       make_kdtree(points[0:median],depth+1), #left_child
-       make_kdtree(points[median+ 1:],depth+1), #right_child
-       dim
-       )
+    info=None
+
+    return Node(points[median],make_kdtree(points[0:median],depth+1),make_kdtree(points[median+ 1:],depth+1), dim,info)
 
 def insert(point,root,depth: int=0):
 
     dim = depth % k #dimension en que se encuentra
     if not root: #Si se encuentra vacio el nodo , retorna un nuevo nodo sin hijos
-        return Node(point,None,None,dim)  
+        info=None
+        return Node(point,None,None,dim,info)  
     if point[dim] < root.point[dim]:#Si la coordenada x o y del punto es menor que el punto del nodo en x o y, se mueve hacia el hijo izquierdo , caso contrario hacia el hijo derecho y ejecuta la funcion denuevo
         root.left_child= insert(point, root.left_child,depth+1)
     else:
         root.right_child= insert(point, root.right_child,depth+1) 
     
     return root
+
+def search_id(id,root,depth :int=0):
+
+
+    if not root: #Si llega a un nodo vacio retorna falso
+        return False
+    if root.point==point: #Si los puntos del nodo , equivalen al punto que buscamos retorna true
+        return True
+    dim = depth % k #dimension en que se encuentra
+    if point[dim] < root.point[dim]:#Si la coordenada x o y del punto es menor que el punto del nodo en x o y, se mueve hacia el hijo izquierdo , caso contrario hacia el hijo derecho y ejecuta la funcion denuevo
+        return search(point, root.left_child,depth+1)
+    else:
+        return search(point, root.right_child,depth+1)
+
 
 def search(point,root,depth : int=0):
 
@@ -147,34 +159,46 @@ points2=[(2,3,4),(5,4,6),(9,6,7),(4,7,8),(8,1,9),(7,2,10)]
 
 
 archive="Desafio3.csv"
-movies=leercsv.read_dataset(archive)
+dataset=leercsv.read_dataset(archive)
+
+movies=dataset[0]
+alias=dataset[1]
+#raise KeyError("asd")
+try:
+    print (movies[alias['281796108asdasdasdf']])
+except KeyError:
+    print("no existe pelicula con este id o nombre x.x")
 
 
 
-root=make_kdtree(points2)
-root2=None
-
-for p in points2:
-    root2=insert(p,root2)
+#print (movies[alias['281796108asdasdasdf']])
 
 
-point=(4,3,1)
-point2=(9,6,7)
-point3=(2,3,4)
 
-neighbours=3
-print ("Search Results")
-print (search(point,root))
-print (search(point3,root))
-print("")
-
-Neighboorhood=knn(point,root,neighbours)
-Neighboor=nn(point,root,mt.inf,None)
-
-print(Neighboor[0].point)
-print("Neighboorss")
-p=0
-while p<neighbours:
-    print (Neighboorhood[p][0].point)
-    p+=1
+#root=make_kdtree(points2)
+#root2=None
+#
+#for p in points2:
+#    root2=insert(p,root2)
+#
+#
+#point=(4,3,1)
+#point2=(9,6,7)
+#point3=(2,3,4)
+#
+#neighbours=3
+#print ("Search Results")
+#print (search(point,root))
+#print (search(point3,root))
+#print("")
+#
+#Neighboorhood=knn(point,root,neighbours)
+#Neighboor=nn(point,root,mt.inf,None)
+#
+#print(Neighboor[0].point)
+#print("Neighboorss")
+#p=0
+#while p<neighbours:
+#    print (Neighboorhood[p][0].point)
+#    p+=1
 
