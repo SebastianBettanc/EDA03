@@ -14,32 +14,23 @@ def read_dataset(archive):
     next(reader)
     x=0
     data=list()
-    movies=dict()
-    alias=dict()
+
     for line in reader:
         
-        x+=1
-          
-        
-        if x<4: #7190
-            
-            
-            print(line)
-            data*=0         #data.clear() mas rapido en tiempo
-            for result in line[1:]:
-               data.append(result)
-            movies[data[0]]=data
-            alias[data[1]]=data[0]
-            alias[data[0]]=data[0]
-        else:
+                  
+  #      if x<4: #7190
 
-            break  
+        data.append(line[1:])
 
+ #       else:
+#
+        #    break  
 
+        #x+=1
     file.close()
     
 
-    return movies,alias
+    return data
 
 #
 #A="7+"
@@ -54,3 +45,10 @@ def read_dataset(archive):
 
 #probabilidad de que sean aprecidos = 1-(1-p^r)^b
 
+a=dict()
+L=list()
+a[11]=L
+print(a[11])
+a[11].append(3)
+a[11].append(5)
+print(a[11])
