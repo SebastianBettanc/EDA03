@@ -7,12 +7,6 @@ import matplotlib.pyplot as plt
 import os
 import time
 
-class Node:
-    def __init__(self,point,info): #,data
-        self.point=point    
-        self.info=info
-
-
 def transformar(data):
 
     dictionary={"Social Networking":1,
@@ -52,121 +46,79 @@ def hashing(vector,matriz_transpuesta):
 
 ###MAIN################################
 
-#Locality-Sensitive Hashing (LSH), implementar , se 
+#Locality-Sensitive Hashing (LSH), Implementado
 
 archive="Desafio3.csv"
-#dataset=np.array(leercsv.read_dataset(archive))
-dataset2=leercsv.read_dataset(archive)
+dataset=leercsv.read_dataset(archive)
+dataset_array=np.array(leercsv.read_dataset(archive))
 map_data=dict()
 alias=dict()
 vectors=list()
 
-for row in dataset2:
-    #modificar row
-    aux=transformar(row)
+for row in dataset:
+
+    aux=transformar(row)    #modificar row
     vectors.append(aux)
     map_data[row[0]]=row
     alias[row[0]]=row[0]
     alias[row[1]]=row[1]
 
-
-
-
-
-
-#a[11].append(3)
-#a[11].append(5)
-#print(a[11])
-
-
+vectors_standar=list()
+for k in map_data.keys():
+    data=transformar(map_data[k])
+    vector=(k,map_data[k])
+#    print (vector)
+#time.sleep(10)
 os.system('cls')
 
-
-#movies=dataset[0]
-#alias=dataset[1]
-#raise KeyError("asd")
 #try:
 #    print (movies[alias['281796108asdasdasdf']])
 #except KeyError:
 #    print("no existe pelicula con este id o nombre x.x")
 
-
-
-
-
-
-
-
-#n = 7190 #total de datos n=b*r
-#
-#b=719 #cantidad de buckets
-#r =10 #cantidad de datos x bucket
-#d= 20  #largo vectores del data set
-#
-#
-#i=42
-#K = 3
 vec1=np.array([-0.99137472, 0.61572851, -0.37733555,  0.0363575 , -0.71647706])#matriz de vectores de a comparar con peliculas #se usara para knn (k-nearest-neighbour)
 vec2=np.array([-0.16737788, 0.83147812, -2.06947369, -0.48174425, -1.60276846])#
 vec3=np.array([-0.9074722 , 0.75953396,  1.10696926, -0.8773451 , -1.11589595])
 
 
 projections=np.array([[ 0.58834302,  0.24020825,  2.21323827, -0.21147486,  1.18477223],
-                      [-0.31146359, -1.88214137, -0.37489443, -0.58475914, -1.57121651]]) #matriz con datos de las peliculas
+                      [-0.31146359, -1.88214137, -0.37489443, -0.58475914, -1.57121651]]) #matriz con probabilidades para calcular el hash de la tabla hash
 
 T=projections.T #matriz transpuerta de projections
 
 #np.random.seed(47)
-prob=np.random.randn(5, 5) # dimension de vector con dimension 
+r=13 #largo del hash , equivale a la cantidad de buckets=2^r
+b=2**r
+print(b) #cantidad de buckets en la tabla hash
+dim=5# dimension de la data
+prob=np.random.randn(r, dim) # dimension de vector con dimension 
 #T=prob.T
-print (prob)
-
+#print (prob)
+M=prob.T
 codigo_hash1=hashing(vec1,T)
 codigo_hash2=hashing(vec2,T)
 codigo_hash3=hashing(vec3,T)
+print(codigo_hash1,codigo_hash2,codigo_hash3)
 
 table_hash=dict() #sonn varias tablas hash , si coincide en su valor de hash en 1 de las tablas , entonces son vecinos 
 L=list()
+id1="12345"
+id2="asdfgh"
 
-vectores_qls=[[3,4,9,7,8],[1,2,3,9,10]]
-print (cossim(vectores_qls[0],vectores_qls[1]))
+vectores_qls=[(id1,[3,4,9,0,0]),(id2,[3,4,10,7,4])]
+print (cossim(vectores_qls[0][1],vectores_qls[1][1]))
 
 for vector_ql in vectores_qls:
-    codigo_hash=hashing(vector_ql,T)
+    codigo_hash=hashing(vector_ql[1],M)  #mientras mas cercanos sean mas probabilidad tienen de tener el mismo hashing
+    if codigo_hash in table_hash:
+        table_hash[codigo_hash].append(vector_ql)
+    else:
+        L=list()
+        table_hash[codigo_hash]=L
+        table_hash[codigo_hash].append(vector_ql) 
     print(codigo_hash)
 
+#print (table_hash["10"]) 
+os.system('cls')
 
-
-lsh[11]=L
-print(lsh[11])
-#
-#print("\n\n\n\n")
-#print (" vector1: ",vec1,"su hash es: ",codigo_hash1,"\n",
-#    '#############################################################################\n',
-#    "vector2: ",vec2,"su hash es: ",codigo_hash2,"\n",
-#    '#############################################################################\n',                   
-#    "vector3: ",vec3,"su hash es: ",codigo_hash3,"\n ################################")
-#print(" ###############################")
-#print("Distancia coseno para vecinos: \n ",vec1,"\n ",vec2 ,"\n  ",cossim(vec1,vec2))
-#print(" ###############################")
-#print("Distancia coseno para vecinos: \n ",vec1,"\n ",vec3 ,"\n  ",cossim(vec1,vec3))
-#print(" ###############################")
-#print("Distancia coseno para vecinos: \n ",vec2,"\n ",vec3 ,"\n  ",cossim(vec2,vec3))
-#
-#
-#local_hashing= LSH(3,7,len(vec1))  #cantidad de tablas hash por la que pasara la colicion , 7 largo del valor hash ,
-#local_hashing.set(vec1,"bucket1")
-#local_hashing.set(vec2,"bucket1")
-#local_hashing.set(vec3,"bucket3")
-#
-#print(local_hashing.__getitem__(vec2))
-#
-##time.sleep(5)
-#os.system("cls")
-#vector_aux=list(movies.values())
-#print(vector_aux)
-#print("\n")
-#
-#for i in range(len(vector_aux)):
-#    vector_aux[i]=transformar(vector_aux[i])
-#print(vector_aux)
+print(dataset_array)
