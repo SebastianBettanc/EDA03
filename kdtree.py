@@ -7,23 +7,51 @@ import matplotlib.pyplot as plt
 import os
 import time
 
-def transformar(data):
+def normal_data(data): #dejar los valores entre 0 y 1 para mejorar el calculo de que tan similares son
 
-    dictionary={"Social Networking":1,
-                "Health & Fitness":2,
-                "Games":3,
-                "Sports":4,
-                "Food & Drink":5,
-                "Productivity":6,
-                "Weather":7,
-                
+    genre={"Book":round(1.0/23.0,3), #Normalizar la data 
+                "Business":round(2/23.0),
+                "Catalogs":round(3/23.0),
+                "Education":round(4/23.0),
+                "Entertainment":round(5/23.0),
+                "Finance":round(6/23.0),
+                "Food & Drink":round(7/23.0),
+                "Games":round(8/23.0),
+                "Health & Fitness":round(9/23.0),
+                "Lifestyle":round(10/23.0),
+                "Medical":round(11/23.0),
+                "Music":round(12/23.0),
+                "Navigation":round(13/23.0),
+                "News":round(14/23.0),
+                "Photo & Video":round(15/23.0),
+                "Productivity":round(16/23.0),
+                "Reference":round(17/23.0),
+                "Shopping":round(18/23.0),
+                "Social Networking":round(19/23.0),
+                "Sports":round(20/23.0),
+                "Travel":round(21/23.0),
+                "Utilities":round(22/23.0),
+                "Weather":round(23/23.0),
+
+                }
+    cont_rating={"12+":0.75,"17+":1,"4+":0.25,"9+":0.5}
 
 
-    }
-
-
+    #size_bytes maximo 99992576 , para datos muy dispersos se ocupara dato/datomayor (retorna valores entre 0 y 1)
+                            #para datos no tan dispersos o que se repiten poco se usaran diccionarios
     L=list()
-    L.append(data[11]) # genero principal transformaremos data
+    L.append(round((float(data[0])/4025969664.0),3))
+    L.append(round((float(data[1])/299.99),3))
+    L.append(round((float(data[2])/2974676.0),3))  
+    L.append(round((float(data[3])/177050.0),3))
+    L.append(round((float(data[4])/5.0),3))
+    L.append(round((float(data[5])/5.0),3))
+    L.append(cont_rating[data[6]])                        #177050.0
+    L.append(genre[data[7]])
+    L.append(round((float(data[8])/47.0),3))
+    L.append(round((float(data[9])/5.0),3))
+    L.append(round((float(data[10])/75.0),3))
+    L.append(float(data[11]))
 
     return L
 
@@ -49,76 +77,72 @@ def hashing(vector,matriz_transpuesta):
 #Locality-Sensitive Hashing (LSH), Implementado
 
 archive="Desafio3.csv"
-dataset=leercsv.read_dataset(archive)
-dataset_array=np.array(leercsv.read_dataset(archive))
-map_data=dict()
+dataset=np.array(leercsv.read_dataset(archive))
+apps=dict()
 alias=dict()
-vectors=list()
 
-for row in dataset:
+dataset_normalized=list() #contiene (id,vector_normalizado) de cada aplicacion
 
-    aux=transformar(row)    #modificar row
-    vectors.append(aux)
-    map_data[row[0]]=row
-    alias[row[0]]=row[0]
-    alias[row[1]]=row[1]
+for app in dataset:
+    
+    apps[app[0]]=app
+    alias[app[0]]=app[0]
+    alias[app[1]]=app[1]
 
-vectors_standar=list()
-for k in map_data.keys():
-    data=transformar(map_data[k])
-    vector=(k,map_data[k])
-#    print (vector)
+    indices=[2,4,5,6,7,8,10,11,12,13,14,15]
+    line=list(app[indices])
+    
+    vector=normal_data(line)
+    value=(app[0],vector)
+    dataset_normalized.append(value)
+
+#print(dataset_normalized)
+
 #time.sleep(10)
-os.system('cls')
-
-#try:
-#    print (movies[alias['281796108asdasdasdf']])
-#except KeyError:
-#    print("no existe pelicula con este id o nombre x.x")
-
-vec1=np.array([-0.99137472, 0.61572851, -0.37733555,  0.0363575 , -0.71647706])#matriz de vectores de a comparar con peliculas #se usara para knn (k-nearest-neighbour)
-vec2=np.array([-0.16737788, 0.83147812, -2.06947369, -0.48174425, -1.60276846])#
-vec3=np.array([-0.9074722 , 0.75953396,  1.10696926, -0.8773451 , -1.11589595])
 
 
-projections=np.array([[ 0.58834302,  0.24020825,  2.21323827, -0.21147486,  1.18477223],
-                      [-0.31146359, -1.88214137, -0.37489443, -0.58475914, -1.57121651]]) #matriz con probabilidades para calcular el hash de la tabla hash
+try:
+    print (apps[alias['281656475']])
+except KeyError:
+    print("no existe app con este id o nombre x.x")
 
-T=projections.T #matriz transpuerta de projections
+r=13 #largo del hash , equivale a la cantidad de buckets=2^r  #b=2**r
 
-#np.random.seed(47)
-r=13 #largo del hash , equivale a la cantidad de buckets=2^r
-b=2**r
-print(b) #cantidad de buckets en la tabla hash
-dim=5# dimension de la data
+dim=12# dimension de la data
 prob=np.random.randn(r, dim) # dimension de vector con dimension 
-#T=prob.T
-#print (prob)
-M=prob.T
-codigo_hash1=hashing(vec1,T)
-codigo_hash2=hashing(vec2,T)
-codigo_hash3=hashing(vec3,T)
-print(codigo_hash1,codigo_hash2,codigo_hash3)
+##T=prob.T
+##print (prob)
+#M=prob.T
+#codigo_hash1=hashing(vec1,T)
+#codigo_hash2=hashing(vec2,T)
+#codigo_hash3=hashing(vec3,T)
+#print(codigo_hash1,codigo_hash2,codigo_hash3)
+#
+#table_hash=dict() #sonn varias tablas hash , si coincide en su valor de hash en 1 de las tablas , entonces son vecinos 
+#id1="12345"
+#id2="asdfgh"
 
-table_hash=dict() #sonn varias tablas hash , si coincide en su valor de hash en 1 de las tablas , entonces son vecinos 
-L=list()
-id1="12345"
-id2="asdfgh"
+#vectores_qls=[(id1,[0.01,1,0.001,0.4,0.6,0.7,0,0,0]),(id2,[3,4,1,3,4,3,3,2,2])]
+#
+#vector_test=[[]]
+#print (cossim(vectores_qls[0][1],vectores_qls[1][1]))
+#
+#for vector_ql in vectores_qls:
+#
+#    codigo_hash=hashing(vector_ql[1],M)  #mientras mas cercanos sean mas probabilidad tienen de tener el mismo hashing
+#    if codigo_hash in table_hash:
+#        table_hash[codigo_hash].append(vector_ql)
+#    else:
+#        L=list()
+#        table_hash[codigo_hash]=L
+#        table_hash[codigo_hash].append(vector_ql) 
+#    print(codigo_hash)
 
-vectores_qls=[(id1,[3,4,9,0,0]),(id2,[3,4,10,7,4])]
-print (cossim(vectores_qls[0][1],vectores_qls[1][1]))
+#for vector in dataset:
 
-for vector_ql in vectores_qls:
-    codigo_hash=hashing(vector_ql[1],M)  #mientras mas cercanos sean mas probabilidad tienen de tener el mismo hashing
-    if codigo_hash in table_hash:
-        table_hash[codigo_hash].append(vector_ql)
-    else:
-        L=list()
-        table_hash[codigo_hash]=L
-        table_hash[codigo_hash].append(vector_ql) 
-    print(codigo_hash)
 
 #print (table_hash["10"]) 
-os.system('cls')
+#os.system('cls')
 
-print(dataset_array)
+
+
