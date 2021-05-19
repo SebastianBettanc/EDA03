@@ -1,8 +1,11 @@
 import os
 import csv
-from collections import deque 
 
 #def convertir=
+
+
+
+
 
 def read_dataset(archive): 
     path=os.path.abspath(archive)
@@ -13,17 +16,16 @@ def read_dataset(archive):
     data=list()
     movies=dict()
     alias=dict()
-
     for line in reader:
         
         x+=1
           
         
-        if x<4:
+        if x<4: #7190
             
             
             print(line)
-            data*=0         #metodo para borrar lista mas rapido (mas que data.clear())
+            data*=0         #data.clear() mas rapido en tiempo
             for result in line[1:]:
                data.append(result)
             movies[data[0]]=data
@@ -35,5 +37,20 @@ def read_dataset(archive):
 
 
     file.close()
+    
 
     return movies,alias
+
+#
+#A="7+"
+#B=A.replace('+','')
+#
+#print (int(B))
+
+#matrices de datos 
+
+#n = b*r
+#n =total set de datos , b= cantidad de buckets , r= cantidad de movies por bucket
+
+#probabilidad de que sean aprecidos = 1-(1-p^r)^b
+

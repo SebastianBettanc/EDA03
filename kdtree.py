@@ -1,162 +1,110 @@
 import math as mt
-import operator
-import leercsv
 
-k=3
+from numpy.core.records import array
+import leercsv
+import numpy as np
+import itertools
+import collections
+import matplotlib.pyplot as plt
+
+
 
 class Node:
-    def __init__(self,point,left_child,right_child,dim,info): #,data
-        #self.data=data
+    def __init__(self,point,info): #,data
         self.point=point    
-        self.left_child=left_child
-        self.right_child=right_child
-        self.dim=dim
         self.info=info
-    def get_id(self):
-        #
-        point()
-        return None
-def transforma_data(line):
-    L=list()
-    
 
+
+def transformar(data):
+
+    dictionary={"Social Networking":1,
+                "Health & Fitness":2,
+                "Games":3,
+                "Sports":4,
+                "Food & Drink":5,
+                "Productivity":6,
+                "Weather":7,
+                
+
+
+
+    }
+
+
+    L=list()
+    L.append(data[11]) # genero principal transformaremos data
 
     return L
 
 
-
-
-
-
-def make_kdtree(points,depth : int=0):
-
-    if not points:
-       return None
-
-    dim= depth % k   #en que dimension se encuentra 
-
-    points.sort(key=operator.itemgetter(dim))#ordena la lista de puntos de menor a mayor segun su dimension
-    median=len(points)//2 # division entera
-    info=None
-
-    return Node(points[median],make_kdtree(points[0:median],depth+1),make_kdtree(points[median+ 1:],depth+1), dim,info)
-
-def insert(point,root,depth: int=0):
-
-    dim = depth % k #dimension en que se encuentra
-    if not root: #Si se encuentra vacio el nodo , retorna un nuevo nodo sin hijos
-        info=None
-        return Node(point,None,None,dim,info)  
-    if point[dim] < root.point[dim]:#Si la coordenada x o y del punto es menor que el punto del nodo en x o y, se mueve hacia el hijo izquierdo , caso contrario hacia el hijo derecho y ejecuta la funcion denuevo
-        root.left_child= insert(point, root.left_child,depth+1)
-    else:
-        root.right_child= insert(point, root.right_child,depth+1) 
+def cossim(v1,v2):#"compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)" distancia coseno entre dos listas
     
-    return root
+    sumxx, sumxy, sumyy = 0, 0, 0
+    for i in range(len(v1)):
+        x = v1[i]; y = v2[i]
+        sumxx += x*x
+        sumyy += y*y
+        sumxy += x*y
+    return sumxy/mt.sqrt(sumxx*sumyy)
 
-def search_id(id,root,depth :int=0):
+def hashing(vector,matriz_transpuesta):
+
+    hash=''.join((np.dot(vector,matriz_transpuesta)>0).astype(int).astype('str')) #fucnion hash #vector 1 pelicula
+
+    return hash
+
+class HashTable:
+    def __init__(self, hash_size, inp_dimensions):
+        self.hash_size = hash_size
+        self.inp_dimensions = inp_dimensions
+        self.hash_table = dict() #creacion tabla hash para guardar os valores con su hash respectivo en buckets
+        self.projections = np.random.randn(self.hash_size, inp_dimensions) #tama;o del hash
+        
+    def generate_hash(self, inp_vector):
+        T=self.projections.T #matriz transpuierta
+        hash = hashing(inp_vector,T) 
+        return hash
+
+    def set(self, inp_vec, label):
+        hash_value = self.generate_hash(inp_vec)
+        table=self.hash_table
+        table[hash_value] = label #similares van al mismo bucket
+        
+    def get_item(self, inp_vec):
+        hash_value = self.generate_hash(inp_vec)
+        return self.hash_table.get(hash_value, [])
+        
+hash_table = HashTable(hash_size=7, inp_dimensions=5) #b=719 #cantidad de buckets  #hash_size=719
+#r =10 #cantidad de datos x bucket
+#d= 20  #largo vectores del data set
 
 
-    if not root: #Si llega a un nodo vacio retorna falso
-        return False
-    if root.point==point: #Si los puntos del nodo , equivalen al punto que buscamos retorna true
-        return True
-    dim = depth % k #dimension en que se encuentra
-    if point[dim] < root.point[dim]:#Si la coordenada x o y del punto es menor que el punto del nodo en x o y, se mueve hacia el hijo izquierdo , caso contrario hacia el hijo derecho y ejecuta la funcion denuevo
-        return search(point, root.left_child,depth+1)
-    else:
-        return search(point, root.right_child,depth+1)
+class LSH:
+    def __init__(self, num_tables, hash_size, inp_dimensions):
+        self.num_tables = num_tables
+        self.hash_size = hash_size
+        self.inp_dimensions = inp_dimensions
+        self.hash_tables = list()
+        for i in range(self.num_tables):
+            self.hash_tables.append(HashTable(self.hash_size, self.inp_dimensions))
+    
+    def set(self, vector, label): #busca con el hash del valor 
+        for table in self.hash_tables:
+            #table[inp_vec] = label
+            table.set(vector,label)
+    
+    def __getitem__(self, inp_vec):
+        results = list()
+        for table in self.hash_tables:
+            results.extend(table.get_item(inp_vec))
+        return list(set(results))
 
 
-def search(point,root,depth : int=0):
-
-    if not root: #Si llega a un nodo vacio retorna falso
-        return False
-    if root.point==point: #Si los puntos del nodo , equivalen al punto que buscamos retorna true
-        return True
-    dim = depth % k #dimension en que se encuentra
-    if point[dim] < root.point[dim]:#Si la coordenada x o y del punto es menor que el punto del nodo en x o y, se mueve hacia el hijo izquierdo , caso contrario hacia el hijo derecho y ejecuta la funcion denuevo
-        return search(point, root.left_child,depth+1)
-    else:
-        return search(point, root.right_child,depth+1)
- 
-def distance(point,node): #distancia euclidiana entre el punto y el punto del nodo
-    suma=0
-    for i in range(len(point)):
-        suma+=(point[i]-node.point[i])**2
-    total=mt.sqrt(suma)
-
-    return total
-
-def nn(point,root,best_distance,best_node): #nearest_neighbour
-
-    if not root: #Si llega a un nodo vacio, retorna el mejor nodo y mejor distancia guardadas
-        return best_node,best_distance
-    d = distance(point,root) #distancia entre el punto y el nodo actual
-    dim=root.dim #dimension actual del kd-tree
-    if d<best_distance:
-        best_node=root
-        best_distance=d
-
-    if point[dim]<root.point[dim]: #Si la coordenada x o y del punto es menor que el punto del nodo en x o y
-        nextBranch=root.left_child  #guarda la hoja mas prometedora (hijo izquierdo), y la posible (hijo derecho)
-        otherBranch=root.right_child 
-    else:
-        nextBranch=root.right_child
-        otherBranch=root.left_child
-    best_node,best_distance=nn(point,nextBranch,best_distance,best_node) #Ejecuta la funcion de nuevo y se mueve hacia la hoja mas prometedora
-
-    if abs(root.point[dim] -point[dim]) < best_distance: #Ejecuta la funcion de nuevo y se mueve hacia la posible hoja solo si la diferencia entre las coordenadas x o y
-        best_node,best_distance=nn(point,otherBranch,best_distance,best_node) #entre el punto y el punto del nodo es menor a la mejor distancia   
-
-    return best_node,best_distance
-
-def knn(point,kdtree,n): #k-nearest neighbour
-    if kdtree==None or n<1: #Si el arbol se encuentra vacio , o existe una cantidad de vecinos invalida (0 o negativo) retorna null
-        return None
-    S=[] #StaCK que contiene nodos prometedores a visitar
-    Q=[] #Lista ordenada que contiene a los ultimos n nodos mas cercanos al punto ordenados por distancia   
-    S.append(kdtree)
-    while S:
-        node=S.pop()
-        d=distance(point,node)
-        dim=node.dim
-        if point[dim] < node.point[dim]: #Lo mismo que en el algoritmo nn , se va guardando la hoja prometedora y la posible
-            nextBranch=node.left_child
-            otherBranch=node.right_child    
-        else:
-            nextBranch=node.right_child
-            otherBranch=node.left_child 
-        if len(Q)<n :  #Si el tama;o de la lista es menor a n se guardara cualquier nodo que se le inserte
-            Q.append(tuple((node,d)))
-            Q.sort(key=operator.itemgetter(1))
-            if otherBranch is not None:
-                S.append(otherBranch)#Como el tama;o de lista es menor a n se agregan todas las hojas al stack
-            if nextBranch is not None:    
-                S.append(nextBranch)
-        #elif len(Q)==n and Q[-1][1]>d: #Si la lista ordenada ya se encuentra llena pero se encuentra un nodo , cuya distancia hacia el punto es menor que
-
-        else:
-            if Q[-1][1]>d:     
-                Q.pop()                    #la distancia mayor guardada en Q, entonces se elimina la distancia mas grande de Q y se inserta el nuevo nodo en la lista  
-                Q.append(tuple((node,d)))
-                Q.sort(key=operator.itemgetter(1)) #Si la lista ordenada ya se encuentra llena pero la distancia del nodo no se satisface, entonces se guarda la hoja prometedora en el stack para analizarla en el siguiente ciclo
-            if nextBranch is not None: 
-                S.append(nextBranch)
-            if abs(node.point[dim]-point[dim]) < Q[-1][1]: #Lo mismo que en nn ,guarda en el stack la posible hoja solo si la diferencia entre las coordenadas x o y
-                if otherBranch is not None:                #entre el punto y el punto del nodo (distancia mayor de la lista Q), es menor a la mejor distancia      
-                    S.append(otherBranch)
-
-    return Q  
-
+#inc_vec , es 1 dato de vector
 
 ###MAIN################################
 
-points=[(3,6),(17,15),(13,15),(6,12),(9,1),(2,7),(10,19)]
-
-points2=[(2,3,4),(5,4,6),(9,6,7),(4,7,8),(8,1,9),(7,2,10)]
-
-
+#Locality-Sensitive Hashing (LSH), implementar , se 
 
 archive="Desafio3.csv"
 dataset=leercsv.read_dataset(archive)
@@ -170,35 +118,46 @@ except KeyError:
     print("no existe pelicula con este id o nombre x.x")
 
 
+n = 7190 #total de datos n=b*r
 
-#print (movies[alias['281796108asdasdasdf']])
+b=719 #cantidad de buckets
+r =10 #cantidad de datos x bucket
+d= 20  #largo vectores del data set
 
 
+i=42
+K = 3
+vec1=np.array([-0.99137472, 0.61572851, -0.37733555,  0.0363575 , -0.71647706])#matriz de vectores de a comparar con peliculas #se usara para knn (k-nearest-neighbour)
+vec2=np.array([-0.16737788, 0.83147812, -2.06947369, -0.48174425, -1.60276846])#
+vec3=np.array([-0.9074722 , 0.75953396,  1.10696926, -0.8773451 , -1.11589595])
 
-#root=make_kdtree(points2)
-#root2=None
-#
-#for p in points2:
-#    root2=insert(p,root2)
-#
-#
-#point=(4,3,1)
-#point2=(9,6,7)
-#point3=(2,3,4)
-#
-#neighbours=3
-#print ("Search Results")
-#print (search(point,root))
-#print (search(point3,root))
-#print("")
-#
-#Neighboorhood=knn(point,root,neighbours)
-#Neighboor=nn(point,root,mt.inf,None)
-#
-#print(Neighboor[0].point)
-#print("Neighboorss")
-#p=0
-#while p<neighbours:
-#    print (Neighboorhood[p][0].point)
-#    p+=1
 
+projections=np.array([[ 0.58834302,  0.24020825,  2.21323827, -0.21147486,  1.18477223],
+                      [-0.31146359, -1.88214137, -0.37489443, -0.58475914, -1.57121651]]) #matriz con datos de las peliculas
+
+T=projections.T #matriz transpuerta de projections
+
+codigo_hash1=hashing(vec1,T)
+codigo_hash2=hashing(vec2,T)
+codigo_hash3=hashing(vec3,T)
+
+print("\n\n\n\n")
+print (" vector1: ",vec1,"su hash es: ",codigo_hash1,"\n",
+    '#############################################################################\n',
+    "vector2: ",vec2,"su hash es: ",codigo_hash2,"\n",
+    '#############################################################################\n',                   
+    "vector3: ",vec3,"su hash es: ",codigo_hash3,"\n ################################")
+print(" ###############################")
+print("Distancia coseno para vecinos: \n ",vec1,"\n ",vec2 ,"\n  ",cossim(vec1,vec2))
+print(" ###############################")
+print("Distancia coseno para vecinos: \n ",vec1,"\n ",vec3 ,"\n  ",cossim(vec1,vec3))
+print(" ###############################")
+print("Distancia coseno para vecinos: \n ",vec2,"\n ",vec3 ,"\n  ",cossim(vec2,vec3))
+
+
+local_hashing= LSH(3,7,len(vec1))  #cantidad de tablas hash por la que pasara la colicion , 7 largo del valor hash ,
+local_hashing.set(vec1,"bucket1")
+local_hashing.set(vec2,"bucket1")
+local_hashing.set(vec3,"bucket3")
+
+print(local_hashing.__getitem__(vec2))
