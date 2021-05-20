@@ -48,7 +48,7 @@ end = time.time()
 print("tiempo de ejecuion para buscar vecinos en LSH: ",round(end - start,5)," segundos")
 
 
-print(len(neighbours))
+#print(len(neighbours))
 
 
 get_app(apps,alias,'281656475')

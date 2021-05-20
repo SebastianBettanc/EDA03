@@ -43,12 +43,10 @@ def LSH(numTables,vector_normalized,hashTables,transposed):  #dataset_normalized
         for id in knn_data[x]:
             knn.append(id[0])
         knn_id.append(knn)
-        S.append(knn_id[x])
+        S.append(set(knn_id[x]))
     
-    aux=S[0]+S[1]+S[2]
-    neighbours=list(set(aux))
-    #print(len(knn_id[0]),len(knn_id[1]),len(knn_id[2]))
-    
+    neighbours=frozenset().union(*S)
+
     return neighbours
 
 def create_hashTables(numTables,length,dim,matrix_normalized):

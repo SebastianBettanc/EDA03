@@ -19,5 +19,3 @@ def read_dataset(archive):
     
     return data
 
-
-
