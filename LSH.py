@@ -32,10 +32,9 @@ def hashing(vector,matriz_transpuesta):
 
 def LSH(numTables,vector_normalized,hashTables,transposed):  #dataset_normalized[0][1]
 
-    
-    
     knn_data=list()
     knn_id=list()
+    S=list()
 
     for x in range(numTables):
 
@@ -44,15 +43,11 @@ def LSH(numTables,vector_normalized,hashTables,transposed):  #dataset_normalized
         for id in knn_data[x]:
             knn.append(id[0])
         knn_id.append(knn)
-
-    conjunt_A=set(knn_id[0])  #mejorar esta parte 
-    conjunt_B=set(knn_id[1])
-    conjunt_C=set(knn_id[2])
-
-    neighbours=list(conjunt_A.union(conjunt_B,conjunt_C))
-
+        S.append(knn_id[x])
     
-    print(len(knn_id[0]),len(knn_id[1]),len(knn_id[2]))
+    aux=S[0]+S[1]+S[2]
+    neighbours=list(set(aux))
+    #print(len(knn_id[0]),len(knn_id[1]),len(knn_id[2]))
     
     return neighbours
 

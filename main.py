@@ -30,25 +30,25 @@ def main(k,dim,length):
 
     return apps,alias,hashTables,transposed,matrix
 
-
-#### def variables 
+##############################################
+##################### def variables########### 
 
 k,dim,hash_lenght=3,12,300
 
 os.system('cls')
 
 V=main(k,dim,hash_lenght)
-
 apps,alias,hashTables,T_list,matrix=V[0],V[1],V[2],V[3],V[4]
 
 vector_t=matrix[0][1]
+
 start = time.time()
 neighbours=LSH.LSH(k,vector_t,hashTables,T_list)
 end = time.time()
 print("tiempo de ejecuion para buscar vecinos en LSH: ",round(end - start,5)," segundos")
 
 
-
+print(len(neighbours))
 
 
 get_app(apps,alias,'281656475')
