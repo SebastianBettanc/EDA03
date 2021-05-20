@@ -99,7 +99,67 @@ def normalize_matrix(matrix):
 
     return data_normalized,apps,alias    
 
-###MAIN################################
+def LSH(numTables,vector_normalized,hashTables,transposed):  #dataset_normalized[0][1]
+
+    
+    
+    knn_data=list()
+    knn_id=list()
+
+    for x in range(numTables):
+
+        knn_data.append((hashTables[x][hashing(vector_normalized,transposed[x])]))    #dataset_normalized[0][1] es el vector normalizado de la app que queremos ver sus vecinos
+        knn=list()
+        for id in knn_data[x]:
+            knn.append(id[0])
+        knn_id.append(knn)
+
+    conjunt_A=set(knn_id[0])
+    conjunt_B=set(knn_id[1])
+    conjunt_C=set(knn_id[2])
+
+    neighbours=list(conjunt_A.union(conjunt_B,conjunt_C))
+
+    
+    print(len(knn_id[0]),len(knn_id[1]),len(knn_id[2]))
+    
+    return neighbours
+
+def get_app(apps,alias,key): #'281656475'
+
+    try:
+        print (apps[alias[key]])
+        return apps[alias[key]]
+    except KeyError:
+        print("no existe app con este id o nombre x.x")
+        return None
+
+def create_hashTables(numTables,length,dim,matrix_normalized):
+
+    tables_prob=ProbTable()
+    transposed=list()
+    hash_tables=list()
+
+    for x in range(numTables):
+
+        hash=dict()
+        hash_tables.append(hash)
+        tables_prob.insert(length,dim)
+        transposed.append(tables_prob.prob_tables[x].T)
+
+        for vector in matrix_normalized:
+            hash_code=hashing(vector[1],transposed[x])
+
+            if hash_code in hash_tables[x]:
+                hash_tables[x][hash_code].append(vector)
+            else:
+                L=list()
+                hash_tables[x][hash_code]=L
+                hash_tables[x][hash_code].append(vector)
+
+    return hash_tables,transposed
+
+######################MAIN################################
 
 #Locality-Sensitive Hashing (LSH), Implementado
 
@@ -110,59 +170,24 @@ dataset_normalized=dataset_n[0]
 apps=dataset_n[1]
 alias=dataset_n[2]
 
-
 os.system('cls')
 
-tables_prob=ProbTable()
-transposed=list()
-hash_tables=list()
+length=300 #largo del valor hash
+dim=12 #dimensiones del vector
+k=3 #cantidad de tablas hash que va a crear el algoritmo
+tables=create_hashTables(k,length,dim,dataset_normalized)
+hashTables=tables[0]
+transposed=tables[1]
 
-length=300
-dim=12
-k=3 #total tablas hash
-
-
-for x in range(k):
-
-    hash=dict()
-    hash_tables.append(hash)
-    tables_prob.insert(length,dim)
-    transposed.append(tables_prob.prob_tables[x].T)
-
-    for vector in dataset_normalized:
-        hash_code=hashing(vector[1],transposed[x])
-
-        if hash_code in hash_tables[x]:
-            hash_tables[x][hash_code].append(vector)
-        else:
-
-            L=list()
-            hash_tables[x][hash_code]=L
-            hash_tables[x][hash_code].append(vector)
-
+vector_t=dataset_normalized[0][1]
 start = time.time()
+neighbours=LSH(k,vector_t,hashTables,transposed)
+end = time.time()
+print("tiempo de ejecuion para buscar vecinos en LSH: ",round(end - start,5)," segundos")
+
+#print(neighbours)
 
 
-knn_data=list()
-knn_id=list()
-
-for x in range(k):
-
-    knn_data.append((hash_tables[x][hashing(dataset_normalized[0][1],transposed[x])]))    #dataset_normalized[0][1] es el vector normalizado de la app que queremos ver sus vecinos
-    knn=list()
-    for id in knn_data[x]:
-        knn.append(id[0])
-    knn_id.append(knn)
-
-
-print(len(knn_id[0]),len(knn_id[1]),len(knn_id[2]))
-
-conjunt_A=set(knn_id[0])
-conjunt_B=set(knn_id[1])
-conjunt_C=set(knn_id[2])
-
-neighbours=list(conjunt_A.union(conjunt_B,conjunt_C))
-print(neighbours)
 vectores=list()
 
 if len(neighbours)>2:
@@ -176,9 +201,8 @@ if len(neighbours)>2:
 
     print("distancia coseno")
     print(cossim(vectores[0],vectores[1]))
-end = time.time()
-print("tiempo de ejecion para buscar vecinos en LSH: ",end - start)
-try:
-    print (apps[alias['281656475']])
-except KeyError:
-    print("no existe app con este id o nombre x.x")
+#end = time.time()
+
+get_app(apps,alias,'281656475')
+
+#print("tiempo de ejecion para buscar vecinos en LSH: ",round(end - start,5)," segundos")
