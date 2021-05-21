@@ -16,35 +16,38 @@
 #15 "vpp_lic": Licencia Vpp activada #si #11
 
 
-def normalize_vector(vector): #dejar los valores entre 0 y 1 para mejorar el calculo de que tan similares son
+def normalize_vector(vector_no_normalized): #dejar los valores entre 0 y 1 para mejorar el calculo de que tan similares son
 
-    genre={"Book":(1.0/23.0), #Normalizar la vector 
-                "Business":2/23.0,
-                "Catalogs":3/23.0,
-                "Education":4/23.0,
-                "Entertainment":5/23.0,
-                "Finance":6/23.0,
-                "Food & Drink":7/23.0,
-                "Games":8/23.0,
-                "Health & Fitness":9/23.0,
-                "Lifestyle":10/23.0,
-                "Medical":11/23.0,
-                "Music":12/23.0,
-                "Navigation":13/23.0,
-                "News":14/23.0,
-                "Photo & Video":15/23.0,
-                "Productivity":16/23.0,
-                "Reference":17/23.0,
-                "Shopping":18/23.0,
-                "Social Networking":19/23.0,
-                "Sports":20/23.0,
-                "Travel":21/23.0,
-                "Utilities":22/23.0,
-                "Weather":23/23.0,
+    indices=[2,4,5,6,7,8,10,11,12,13,14,15]
+    vector=list(vector_no_normalized[indices])
+
+    genre={"Book":(0.0), #Normalizar la vector 
+                "Business":1/22.0,
+                "Catalogs":2/22.0,
+                "Education":3/22.0,
+                "Entertainment":4/22.0,
+                "Finance":5/22.0,
+                "Food & Drink":6/22.0,
+                "Games":7/22.0,
+                "Health & Fitness":8/22.0,
+                "Lifestyle":9/22.0,
+                "Medical":10/22.0,
+                "Music":11/22.0,
+                "Navigation":12/22.0,
+                "News":13/22.0,
+                "Photo & Video":14/22.0,
+                "Productivity":15/22.0,
+                "Reference":16/22.0,
+                "Shopping":17/22.0,
+                "Social Networking":18/22.0,
+                "Sports":19/22.0,
+                "Travel":20/22.0,
+                "Utilities":21/22.0,
+                "Weather":1.0
 
                 }
 
-    cont_rating={"12+":0.75,"17+":1,"4+":0.25,"9+":0.5}
+    cont_rating={"12+":2.3/3.0,"17+":1.0,"4+":0.0,"9+":1.0/3.0}
 
 
     #size_bytes maximo 99992576 , para datos muy dispersos se ocupara dato/datomayor (retorna valores entre 0 y 1)
@@ -71,17 +74,14 @@ def normalize_matrix(matrix):
     apps=dict()
     alias=dict()
 
-    for app in matrix:
+    for app in matrix: # q vector
+
         apps[app[0]]=app
         alias[app[0]]=app[0]
         alias[app[1]]=app[1]
+        vector=normalize_vector(app)
 
-        indices=[2,4,5,6,7,8,10,11,12,13,14,15]
-        line=list(app[indices])
-        vector=normalize_vector(line)
         value=(app[0],vector)
-
         data_normalized.append(value)    
-
 
     return data_normalized,apps,alias
