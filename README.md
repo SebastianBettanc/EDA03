@@ -11,17 +11,6 @@ Correr el archivo main.py
 
 -----------------------------------------------------
 
-k-nearest neighbours (knn)
-
-  Nuestro problema consiste en encontrar los vecinos mas cercanos a nuestro vector() dentro de una dataset de apps,este dataset consiste en una matriz que contiene las ids y informacion respectiva de la app , el cual c ,cuales son las apps mas cercanas a la app que   
-
-
-
-
-   Nuestro problema consiste en encontrar a los vecinos mas cercanos a un vector normalizado (knn), Este vector normalizado  fig1. Como obtener este vector normalizado . E, este vector esta dado por la informacion de la app , este vector se obtiene ya sea desde una id de app dada , o un vector creado arbitrariamente(Fig 1),
-para determinar que 
-
-  
 
 
 
@@ -31,9 +20,22 @@ para determinar que
 
 
 
+---------------------------------------------------
+
+Local sensitive hashing(LSH)
+
+LSH consiste en utilizar tablas hash que contienen buckets, dentro de cada bucket se encuentran vectores similares entre si; Entonces para encontrar los knn de un vector E cualquiera , simplemente vamos al bucket donde se encuentra este vector y todos los vectores que se encuentren en el mismo bucket que el son vecinos de este. Para poder determinar los vectores que van en un mismo bucket L ,              .
+
+![fig1](https://user-images.githubusercontent.com/82010968/119214820-aa01ba00-ba97-11eb-9bcd-ef54dfb15a18.png)
+
+En la figura anterior, vemos 
 
 
 
+
+
+
+-------------------------
 
 
 VIDEO EXPLICATIVO !!! = https://youtu.be/UgMCbFao5hY
