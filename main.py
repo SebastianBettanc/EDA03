@@ -1,5 +1,4 @@
 import os
-import time
 import leercsv
 import numpy as np
 import LSH
@@ -31,66 +30,60 @@ def main(k,dim,length):
 
     return apps,alias,hashTables,transposed,matrix
 
-def cossim(v1,v2):#"compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)" distancia coseno entre dos vectores
-    
-    sumxx, sumxy, sumyy = 0.0, 0.0, 0.0
+def distance(v1,v2):
+
+    sum=0
     for i in range(len(v1)):
-        x = v1[i]; y = v2[i]
-        sumxx += x*x
-        sumyy += y*y
-        sumxy += x*y
-    return float(sumxy/mt.sqrt(sumxx*sumyy))
+        sum+=(v1[i]-v2[i])**2
 
-def default(vector_normal,matrix): #buscar vecinos mas cercanos por fuerza bruta
+    return mt.sqrt(sum)
 
+def brute_knn(vector_normal,matrix,n):
     knn=list()
 
     for vector in matrix:                                 
-        cos_distance=cossim(vector_normal,vector[1])
+        d=distance(vector_normal,vector[1])
 
-        if len(knn)<10 and cos_distance!=1:
-            value=(vector[0],cos_distance)
+        if len(knn)<n and d!=0:
+            value=(vector[0],d)
             knn.append(value)
-            knn.sort(key=operator.itemgetter(1),reverse=True)  
+            knn.sort(key=operator.itemgetter(1))  
                 
-        elif  len(knn)==10:
-            knn.sort(key=operator.itemgetter(1),reverse=True)
-            if cos_distance>=knn[-1][1] and cos_distance!=1:
-                value=(vector[0],cos_distance)
-                #
+        elif  len(knn)==n:
+            knn.sort(key=operator.itemgetter(1))
+            if d<knn[-1][1] and d!=0:
+                value=(vector[0],d)
                 knn.pop()
                 knn.append(value)
 
-    knn.sort(key=operator.itemgetter(1),reverse=True)
+    knn.sort(key=operator.itemgetter(1))
 
     return knn
 
-def correction(vector,ids,apps,alias): #1-distance_cos
+def lsh_knn(vector,ids,apps,alias,n): #1-distance_cos
     knn=list()
 
     for id in ids:
         app=get_app(apps,alias,id)
         vector_app=normalizer.normalize_vector(app)
-        cos_distance=cossim(vector,vector_app)
+        d=distance(vector,vector_app)
 
-        if len(knn)<10 and cos_distance!=1:
-            value=(id,cos_distance)
+        if len(knn)<n and d!=0:
+            value=(id,d)
             knn.append(value)
-            knn.sort(key=operator.itemgetter(1),reverse=True)  
+            knn.sort(key=operator.itemgetter(1))  
                 
-        elif  len(knn)==10:
-            knn.sort(key=operator.itemgetter(1),reverse=True)
-            if cos_distance>=knn[-1][1] and cos_distance!=1:
-                value=(id,cos_distance)
+        elif  len(knn)==n:
+            knn.sort(key=operator.itemgetter(1))
+            if d<knn[-1][1] and d!=0:
+                value=(id,d)
                 knn.pop()
                 knn.append(value)
 
 
-    knn.sort(key=operator.itemgetter(1),reverse=True)
+    knn.sort(key=operator.itemgetter(1))
 
     return knn
-
-
 
 ############################################## ('1097482356'
 ##################### def variables########### 
@@ -103,23 +96,23 @@ apps,alias,hashTables,T_list,matrix=V[0],V[1],V[2],V[3],V[4]
 
 app=get_app(apps,alias,'281656475') 
 vector_id=normalizer.normalize_vector(app)#vector normal dada la id de la app
-vector=[0.025034521472241278, 0.013300443348111604, 0.007157754323496072, 0.00014685117198531489, 0.8, 0.9, 0.0, 0.3181818181818182, 0.8085106382978723, 1.0, 0.13333333333333333, 1.0] #vector normalizo cualquiera
-
-
+vector=[0.03, 0.026, 0.007, 0.0001, 0.8, 0.9, 0.0, 0.31, 0.8, 1.0, 0.13, 1.0] #vector random # se puede reemplazar por vector_id para los vecinos
+#de un vector dado cualquiera
 
 t1=timeit.default_timer()
-set_lsh=list(LSH.LSH(k,vector_id,hashTables,T_list))
-neighbours_lsh=correction(vector_id,set_lsh,apps,alias)
+set_lsh=list(LSH.LSH(k,vector_id,hashTables,T_list)) #contiene una lista con "posibles vecinos"
+neighbours_lsh=lsh_knn(vector_id,set_lsh,apps,alias,10) #ordena la lista de "posibles vecinos" , por distancia y retorna los n mejores (para 10 vecinos, el % de falsos positivos es casi 0)
 t2=timeit.default_timer()
 print("tiempo de ejecucion para buscar vecinos en LSH: ",t2-t1," segundos")
 
 t3 = timeit.default_timer()
-neighbours_brute=default(vector_id,matrix)
+neighbours_brute=brute_knn(vector_id,matrix,10)
 t4 = timeit.default_timer()
 print("tiempo de ejecucion para buscar vecinos por fuerza bruta : ",t4 - t3," segundos")
 
-print(neighbours_brute)#imprime id y distancia de vecinos por fuerza bruta
+
+print(neighbours_lsh)#impride id y distancia de vecinos por LSH
 print("")
-print(neighbours_lsh)#impride id y distancia de vecions por LSH
+print(get_app (apps,alias,'1061610336'))
 
 ###

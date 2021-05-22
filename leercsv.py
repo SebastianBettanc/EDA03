@@ -8,11 +8,8 @@ def read_dataset(archive):
     reader=csv.reader(file)
     next(reader)
     data=list()
-    x=0
     
     for line in reader:
-
-
         data.append(line[1:])
 
     file.close()
