@@ -41,10 +41,23 @@ que la funcion hash es diferente dependiendo de la tabla T , vemos que pasa si r
   
   En nuestro caso particular para ejemplificar mejor seria:
  
-  knn(A)= Conjunto(T[hash (A)] + M[hash(A)] ) => Conjunto( T["111"] +M["011"] ) => Conjunto( [A,B]  +[A,D] ) = knn(A) = [A,B,D]
+  knn(A)= Conjunto(T[hash (A)] + M[hash(A)] ) => Conjunto( T["111"] +M["011"] ) => Conjunto( [A,B]  +[A,D] ) = knn(A) = [A,B,D] (fig7)
 
 Para generalizar si existe una colision de un dato distinto al vector A en una tabla cualquiera (T y M en este caso) , entonces este es muy probable que este sea vecino de
 el vector A
+
+  dibujo*
+
+  Los parametros que recibe esta estructura LSH, es una factor k que determina que tan largo sera el hash (hash consiste de 0 y 1) y lenght ,que nos indica que tantas tablaHash se utilizaran para calcular las colisiones; Para nuestro dataset en particular tendremos un factor k=300 y lenght=7.
+  
+  Un problema que no se ha mencionado, es que nosotros al querer obtener los 10 knn mas cercannos a un vector V es probable que 1 bucket o el set completo tenga mas de 10 datos(vecinos),en este caso en particular simplemente juntamos el set completo y ordenamos por menos distancia euclidiana , elegimos los 10 mejores y descartamos los demas.
+  
+  
+  
+  se puede corrobar que de hecho los vecinos con LSH , corresponde exactamente a los vecinos encontrados por fuerza bruta , es decir, mientras mas alto sea el factor k y lenght la prediccion de LSH tiene menos % de falsos positivos, 
+Si aumentamos mucho el lenght este ocasiona que nuestro algoritmo sea mas lento , pero si su valor es muy peque;o existe una posibilidad de que puede entregar menos vecinos de los pedidos 
+
+
 
 
 
