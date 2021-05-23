@@ -73,6 +73,5 @@ Si aumentamos mucho el lenght este ocasiona que nuestro algoritmo sea mas lento 
 VIDEO EXPLICATIVO LINK = https://youtu.be/V_obqvM2QkY
 
 
-
 Coevaluacion 
 Sebastian :+0
