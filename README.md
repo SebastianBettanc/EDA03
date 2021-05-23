@@ -11,8 +11,10 @@ Correr el archivo main.py
 
 -----------------------------------------------------
 
+El problema de los vecinos mas cercanos (KNN) en este problema se define como: Dado un dataset P con N vectores en el, se construira una estructura de datos que dado cualquier vector Q, retorne el conjunto de vectores L, que sean cercanos a Q, esta estructura tiene que ser capaz de obtener los KNN sin comparar todas las distancias entre el vector Q y los N vectores de P.
 
   
+  Para reducir el tiempo total y la memoria para encontrar los knn, para este problema en particular utilizaremos LSH. mas adelante se explica como funciona este
 
 
 
