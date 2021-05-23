@@ -14,23 +14,36 @@ Correr el archivo main.py
 El problema de los vecinos mas cercanos (KNN) en este problema se define como: Dado un dataset P con N vectores en el, se construira una estructura de datos que dado cualquier vector Q, retorne el conjunto de vectores L, que sean cercanos a Q, esta estructura tiene que ser capaz de obtener los KNN sin comparar todas las distancias entre el vector Q y los N vectores de P.
 
   
-  Para reducir el tiempo total y la memoria para encontrar los knn, para este problema en particular utilizaremos LSH, .
   
-  Nuestro dataset P, en cada fila tendra 1 valor , este valor corresponde a =(ID,VECTOR_NORMALIZADO) ,Para obtener los vectores normalizado primero tenemos que:
   
-Atributos vector Q no normalizado:
+  Nuestro dataset P, en cada fila tendra 1 valor , este valor corresponde a:
+  
+  •(ID,VECTOR_NORMALIZADO) 
+  
+  Para obtener los vectores normalizado primero tenemos que aplicar una funcion de normalizacion a un vector no normalizado, 
+  
+Vector Q cualquiera no normalizado:
+
+
 
  ![vector_no_normal](https://user-images.githubusercontent.com/82010968/119277578-869d5300-bbee-11eb-9dc8-b54c43a793b0.png)
 
  El vector Q normalizado :
  
- 
+  ![vector_normal](https://user-images.githubusercontent.com/82010968/119277937-64a4d000-bbf0-11eb-9f6b-9a817732618b.png)
+
+>***figura 1***:
+![fig1_1](https://user-images.githubusercontent.com/82010968/119278045-f0b6f780-bbf0-11eb-8ab3-a40dc870f910.png)
+
+>***figura 2*** :
+![fig2_2](https://user-images.githubusercontent.com/82010968/119278068-03313100-bbf1-11eb-9b0f-fd473d4eaf69.png)
 
 
- 
+
+ ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
 
 
-
+Para reducir el tiempo total y la memoria para encontrar los knn, para este problema en particular utilizaremos LSH.
 
 
 
