@@ -25,12 +25,45 @@ El problema de los vecinos mas cercanos (KNN) en este problema se define como: D
 Vector Q cualquiera no normalizado:
 
 
+Pos Vector Q |Informacion                      								              | Tipo de valores	| Rango Valores
+-------------|--------------------------------------------------------------|---------|---------------------
+Q[0]		     |App ID 														                            |str  		|
+Q[1]		     |Nombre de la App 												                      |str  		|
+Q[2]		     |Tamaño (en Bytes)												                      |int		  |0-4025969664
+Q[3]		     |Moneda														                            |str  		|"USD"
+Q[4]		     |Precio en la Moneda											                      |float 		|0-299.99
+Q[5]		     |Cantidad de reseñas (Para todas las versiones)				        |int		  |0-2974676
+Q[6]		     |Cantidad de reseñas (Para la versión actual)					        |int   		|0-177050
+Q[7]		     |Promedio de puntaje de las reseñas (Para todas las versiones)	|float    |0-5.0
+Q[8]         |Promedio de puntaje de las reseñas (Para la versión actual)	  |float 		|0-5.0
+Q[9]		     |Ultima version 												                        |str		  |
+Q[10]		     |Rating de contenido 											                    |str		  |
+Q[11]		     |Género principal												                      |str		  |
+Q[12] 		   |Cantidad de dispositivos soportados							              |int 		  |0-47
+Q[13] 		   |Cantidad de capturas de pantallas por dispositivos			      |int 		  |0-5
+Q[14] 		   |Cantidad de lenguajes soportados								              |int 		  |0-75
+Q[15] 		   |Licencia Vpp activada 										                    |int 		  |0 o 1
 
- ![vector_no_normal](https://user-images.githubusercontent.com/82010968/119277578-869d5300-bbee-11eb-9dc8-b54c43a793b0.png)
+
+
 
  El vector Q normalizado :
  
-  ![vector_normal](https://user-images.githubusercontent.com/82010968/119277937-64a4d000-bbf0-11eb-9f6b-9a817732618b.png)
+Pos Vector Q |Valor
+-------------|----------------------------------------------------------------------------------------------
+Q[0]| Bytes/4025969664.0
+Q[1]| Precio/299.99
+Q[2]| Cantidad de reseñas (Para todas las versiones)/2974676
+Q[3]| Cantidad de reseñas (Para la versión actual)/177050
+Q[4]| Promedio de puntaje de las reseñas (Para todas las versiones)/5.0
+Q[5]| Promedio de puntaje de las reseñas (Para la versione actual)/5.0
+Q[6]| Rating de contenido *(ver figura 1)
+Q[7]| Genero principal *(ver figura 2)
+Q[8]| Cantidad de dispositivos soportados/47.0
+Q[9]| Cantidad de capturas de pantallas por dispositivos/5.0
+Q[10]| Cantidad de lenguajes soportados/75.0
+Q[11]| Valor licencia Vpp
+
 
 >***figura 1***:
 ![fig1_1](https://user-images.githubusercontent.com/82010968/119278045-f0b6f780-bbf0-11eb-8ab3-a40dc870f910.png)
@@ -40,17 +73,13 @@ Vector Q cualquiera no normalizado:
 
 
 
- ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
-
-
 Para reducir el tiempo total y la memoria para encontrar los knn, para este problema en particular utilizaremos LSH.
-
-
 
 
 
 ---------------------------------------------------
 
+ ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
 Local sensitive hashing(LSH)
 
 LSH consiste en utilizar tablas hash que contienen buckets, dentro de cada bucket se encuentran vectores similares entre si; Entonces para encontrar los knn de un vector E cualquiera , simplemente vamos al bucket donde se encuentra este vector y todos los vectores que se encuentren en el mismo bucket que el son vecinos de este. Para poder determinar los vectores que van en un mismo bucket L .
