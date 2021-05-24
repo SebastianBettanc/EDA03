@@ -127,7 +127,7 @@ que la funcion hash es diferente dependiendo de la tabla T , vemos que pasa si r
   
   En nuestro caso particular para ejemplificar mejor seria:
  
-  ***knn(A)= Conjunto(T[hash (A)] + M[hash(A)] ) => Conjunto( T["111"] +M["011"] )***
+  ***knn(A)= Conjunto( T[hash (A)] + M[hash(A)] ) => Conjunto( T["111"] +M["011"] )***
   
   ***=> Conjunto( [A,B]  +[A,D] ) = knn(A) = [A,B,D]*** 
   
