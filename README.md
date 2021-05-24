@@ -83,12 +83,9 @@ Q[10]| Cantidad de lenguajes soportados/75.0
 Q[11]| Valor licencia Vpp
 
 
->***figura 1***:
-![fig1_1](https://user-images.githubusercontent.com/82010968/119278045-f0b6f780-bbf0-11eb-8ab3-a40dc870f910.png)
+>***figura 1***:<img src="https://user-images.githubusercontent.com/82010968/119278045-f0b6f780-bbf0-11eb-8ab3-a40dc870f910.png" width="300" />
 
->***figura 2*** :
-![fig2_2](https://user-images.githubusercontent.com/82010968/119278068-03313100-bbf1-11eb-9b0f-fd473d4eaf69.png)
-
+>***figura 2*** :<img src="https://user-images.githubusercontent.com/82010968/119278068-03313100-bbf1-11eb-9b0f-fd473d4eaf69.png" width="300" />
 
 
 Para reducir el tiempo total y la memoria para encontrar los knn, para este problema en particular utilizaremos LSH.
@@ -100,9 +97,25 @@ Para reducir el tiempo total y la memoria para encontrar los knn, para este prob
  
 🟩Local sensitive hashing(LSH)
 
-LSH consiste en utilizar tablas hash que contienen buckets, dentro de cada bucket se encuentran vectores similares entre si; Entonces para encontrar los knn de un vector E cualquiera , simplemente vamos al bucket donde se encuentra este vector y todos los vectores que se encuentren en el mismo bucket que el son vecinos de este. Para poder determinar los vectores que van en un mismo bucket L .
 
-![fig1](https://user-images.githubusercontent.com/82010968/119214820-aa01ba00-ba97-11eb-9bcd-ef54dfb15a18.png)
+
+
+
+LSH consiste en utilizar tablas hash que contienen buckets, dentro de cada bucket se encuentran vectores similares entre si:
+
+<img src="https://user-images.githubusercontent.com/82010968/119298657-70fa4e80-bc2b-11eb-93fe-d9d3fd77da02.png" width="600" />
+
+Entonces para encontrar los knn de un vector E cualquiera , simplemente vamos al bucket donde se encuentra este vector y todos los vectores que se encuentren en el mismo bucket que el son vecinos de este. Para poder determinar los vectores que van en un mismo bucket L utilizaremos una funcion hash, esta funcion hash dada esta por:
+
+
+<img src="https://user-images.githubusercontent.com/82010968/119299737-81132d80-bc2d-11eb-8dc7-3269109608de.png" width="400" />
+
+------------------------------------------
+
+<img src="https://user-images.githubusercontent.com/82010968/119214820-aa01ba00-ba97-11eb-9bcd-ef54dfb15a18.png" width="400" />
+
+ 
+
 
 En la figura anterior,asumamos que A,B Y D son vecinos cercanos , vemos que el vector A y B van en el mismo bucket "111" ,pero no a si el vector D, este problema se presenta ya
 que la funcion hash es diferente dependiendo de la tabla T , vemos que pasa si realizamos lo mismo con una tabla M:
@@ -143,6 +156,13 @@ Si aumentamos mucho el lenght este ocasiona que nuestro algoritmo sea mas lento 
 
 
 -------------------------
+
+Resultados
+
+
+
+
+------
 
 
 VIDEO EXPLICATIVO LINK = https://youtu.be/V_obqvM2QkY
