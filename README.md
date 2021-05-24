@@ -75,8 +75,8 @@ Q[2]| Cantidad de reseñas (Para todas las versiones)/2974676
 Q[3]| Cantidad de reseñas (Para la versión actual)/177050
 Q[4]| Promedio de puntaje de las reseñas (Para todas las versiones)/5.0
 Q[5]| Promedio de puntaje de las reseñas (Para la versione actual)/5.0
-Q[6]| Rating de contenido *(ver figura 1)
-Q[7]| Genero principal *(ver figura 2)
+Q[6]| Rating de contenido ***(ver figura 1)***
+Q[7]| Genero principal ***(ver figura 2)***
 Q[8]| Cantidad de dispositivos soportados/47.0
 Q[9]| Cantidad de capturas de pantallas por dispositivos/5.0
 Q[10]| Cantidad de lenguajes soportados/75.0
@@ -127,7 +127,9 @@ que la funcion hash es diferente dependiendo de la tabla T , vemos que pasa si r
   
   En nuestro caso particular para ejemplificar mejor seria:
  
-  ***knn(A)= Conjunto(T[hash (A)] + M[hash(A)] ) => Conjunto( T["111"] +M["011"] ) => Conjunto( [A,B]  +[A,D] ) = knn(A) = [A,B,D]*** 
+  ***knn(A)= Conjunto(T[hash (A)] + M[hash(A)] ) => Conjunto( T["111"] +M["011"] )***
+  
+  ***=> Conjunto( [A,B]  +[A,D] ) = knn(A) = [A,B,D]*** 
   
 
 ------------------------------
