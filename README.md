@@ -125,25 +125,31 @@ que la funcion hash es diferente dependiendo de la tabla T , vemos que pasa si r
 
   En este caso vemos que el vector A y D corresponden al mismo bucket "011", pero en este caso B no tiene el mismo valor del bucket a pesar de ser vecino con A, una solucion para esto , es tener varias tablas hash donde los knn de un vector V cualquiera sera el conjunto de los buckets :
   
-  knn(V)= Conjunto( Tabla1( hash (V) ) + Tabla2(hash(V)) + .... + TablaN (hash(V)) )
+ ***knn(V)= Conjunto( Tabla1( hash (V) ) + Tabla2(hash(V)) + .... + TablaN (hash(V)) )***
   
   En nuestro caso particular para ejemplificar mejor seria:
  
-  knn(A)= Conjunto(T[hash (A)] + M[hash(A)] ) => Conjunto( T["111"] +M["011"] ) => Conjunto( [A,B]  +[A,D] ) = knn(A) = [A,B,D] (fig7)
+  ***knn(A)= Conjunto(T[hash (A)] + M[hash(A)] ) => Conjunto( T["111"] +M["011"] ) => Conjunto( [A,B]  +[A,D] ) = knn(A) = [A,B,D]*** 
+  
 
-Para generalizar si existe una colision de un dato distinto al vector A en una tabla cualquiera (T y M en este caso) , entonces este es muy probable que este sea vecino de
-el vector A
+------------------------------
 
-  dibujo*
+Para generalizar se tiene la siguiente figura de ejemplo: 
 
-  Los parametros que recibe esta estructura LSH, es una factor k que determina que tan largo sera el hash (hash consiste de 0 y 1) y lenght ,que nos indica que tantas tablaHash se utilizaran para calcular las colisiones; Para nuestro dataset en particular tendremos un factor k=300 y lenght=7.
+  ![figura5](https://user-images.githubusercontent.com/82010968/119300440-c1bf7680-bc2e-11eb-9a72-f884856d21cb.png)
+
+
+
+  Los parametros que recibe esta estructura LSH, es el factor k del hash (largo del hash) y lenght ,que nos indica que tantas tablaHash se utilizaran para calcular las colisiones; Para nuestro dataset **k=300** , **lenght=7**.
   
   Un problema que no se ha mencionado, es que nosotros al querer obtener los 10 knn mas cercannos a un vector V es probable que 1 bucket o el set completo tenga mas de 10 datos(vecinos),en este caso en particular simplemente juntamos el set completo y ordenamos por menos distancia euclidiana , elegimos los 10 mejores y descartamos los demas.
   
   
+  ![figura6](https://user-images.githubusercontent.com/82010968/119300899-8d988580-bc2f-11eb-910d-8ccb1ad36906.png)
+
   
-  se puede corrobar que de hecho los vecinos con LSH , corresponde exactamente a los vecinos encontrados por fuerza bruta , es decir, mientras mas alto sea el factor k y lenght la prediccion de LSH tiene menos % de falsos positivos, 
-Si aumentamos mucho el lenght este ocasiona que nuestro algoritmo sea mas lento , pero si su valor es muy peque;o existe una posibilidad de que puede entregar menos vecinos de los pedidos 
+  
+  
 
 
 
@@ -157,15 +163,48 @@ Si aumentamos mucho el lenght este ocasiona que nuestro algoritmo sea mas lento 
 
 -------------------------
 
-Resultados
+🟪Resultados
 
 
+
+-Mostrar informacion app:
+
+***get_app (apps,alias,'281656475')***
+
+***get_app (apps,alias,'PAC-MAN Premium')***
+
+![resultado1](https://user-images.githubusercontent.com/82010968/119301688-e0bf0800-bc30-11eb-8cb2-4e05e969c87a.png)
+
+-Mostrar informacion app mas usadas parecidas a id o vector , En este caso de ejemplo contiene la id y la distancia hacia el vector que  corresponde a la app ('281656475' ,pacman premium) :
+
+***Vector A= get_app (apps,alias,id ) o Vector A= [0.03,0.01,.....,n}***
+
+***set_lsh = list(LSH.LSH(k,vectorA,hashTables,T_list))***
+
+***neighbours_lsh= lsh_knn(vectorA,set_lsh,apps,alias,10)***
+
+***print(neighbours_lsh)***
+
+![resultado2](https://user-images.githubusercontent.com/82010968/119302054-76f32e00-bc31-11eb-8fe2-9fbb25de3c7c.png)
+
+-Comparar resultados:
+***neighbours_brute=brute_knn(vector_id,matrix,10) vs neighbours_lsh***
+
+![resultado3](https://user-images.githubusercontent.com/82010968/119302486-31833080-bc32-11eb-92d9-2827d47bd15f.png)
+
+*Corroborar que lsh y fuerza bruta son los mismos
+
+
+
+
+  se puede corrobar que de hecho los vecinos con LSH , corresponde exactamente a los vecinos encontrados por fuerza bruta , es decir, mientras mas alto sea el factor k y lenght la prediccion de LSH tiene menos % de falsos positivos, 
+Si aumentamos mucho el lenght este ocasiona que nuestro algoritmo sea mas lento , pero si su valor es muy peque;o existe una posibilidad de que puede entregar menos vecinos de los pedidos 
 
 
 ------
 
 
-VIDEO EXPLICATIVO LINK = https://youtu.be/V_obqvM2QkY
+⬛VIDEO EXPLICATIVO LINK = https://youtu.be/V_obqvM2QkY
 
 
 Coevaluacion 
