@@ -99,8 +99,6 @@ Para reducir el tiempo total y la memoria para encontrar los knn, para este prob
 
 
 
-
-
 LSH consiste en utilizar tablas hash que contienen buckets, dentro de cada bucket se encuentran vectores similares entre si:
 
 <img src="https://user-images.githubusercontent.com/82010968/119298657-70fa4e80-bc2b-11eb-93fe-d9d3fd77da02.png" width="600" />
@@ -120,7 +118,7 @@ Entonces para encontrar los knn de un vector E cualquiera , simplemente vamos al
 En la figura anterior,asumamos que A,B Y D son vecinos cercanos , vemos que el vector A y B van en el mismo bucket "111" ,pero no a si el vector D, este problema se presenta ya
 que la funcion hash es diferente dependiendo de la tabla T , vemos que pasa si realizamos lo mismo con una tabla M:
 
-![fig2](https://user-images.githubusercontent.com/82010968/119272557-77a9a700-bbd4-11eb-9fb5-4a2f84809161.png)
+<img src="https://user-images.githubusercontent.com/82010968/119272557-77a9a700-bbd4-11eb-9fb5-4a2f84809161.png" width="400" />
 
 
   En este caso vemos que el vector A y D corresponden al mismo bucket "011", pero en este caso B no tiene el mismo valor del bucket a pesar de ser vecino con A, una solucion para esto , es tener varias tablas hash donde los knn de un vector V cualquiera sera el conjunto de los buckets :
@@ -136,7 +134,7 @@ que la funcion hash es diferente dependiendo de la tabla T , vemos que pasa si r
 
 Para generalizar se tiene la siguiente figura de ejemplo: 
 
-  ![figura5](https://user-images.githubusercontent.com/82010968/119300440-c1bf7680-bc2e-11eb-9a72-f884856d21cb.png)
+<img src="https://user-images.githubusercontent.com/82010968/119300440-c1bf7680-bc2e-11eb-9a72-f884856d21cb.png" width="700" />
 
 
 
@@ -145,18 +143,7 @@ Para generalizar se tiene la siguiente figura de ejemplo:
   Un problema que no se ha mencionado, es que nosotros al querer obtener los 10 knn mas cercannos a un vector V es probable que 1 bucket o el set completo tenga mas de 10 datos(vecinos),en este caso en particular simplemente juntamos el set completo y ordenamos por menos distancia euclidiana , elegimos los 10 mejores y descartamos los demas.
   
   
-  ![figura6](https://user-images.githubusercontent.com/82010968/119300899-8d988580-bc2f-11eb-910d-8ccb1ad36906.png)
-
-  
-  
-  
-
-
-
-
-
-
-
+  <img src="https://user-images.githubusercontent.com/82010968/119300899-8d988580-bc2f-11eb-910d-8ccb1ad36906.png" width="550" />
 
 
 
@@ -188,17 +175,17 @@ Para generalizar se tiene la siguiente figura de ejemplo:
 ![resultado2](https://user-images.githubusercontent.com/82010968/119302054-76f32e00-bc31-11eb-8fe2-9fbb25de3c7c.png)
 
 -Comparar resultados:
+
 ***neighbours_brute=brute_knn(vector_id,matrix,10) vs neighbours_lsh***
 
 ![resultado3](https://user-images.githubusercontent.com/82010968/119302486-31833080-bc32-11eb-92d9-2827d47bd15f.png)
 
-*Corroborar que lsh y fuerza bruta son los mismos
+🔴Corroborar que lsh y fuerza bruta son los mismos
 
 
+![resultado_final](https://user-images.githubusercontent.com/82010968/119303307-84111c80-bc33-11eb-8bc5-dfecd5df184a.png)
 
-
-  se puede corrobar que de hecho los vecinos con LSH , corresponde exactamente a los vecinos encontrados por fuerza bruta , es decir, mientras mas alto sea el factor k y lenght la prediccion de LSH tiene menos % de falsos positivos, 
-Si aumentamos mucho el lenght este ocasiona que nuestro algoritmo sea mas lento , pero si su valor es muy peque;o existe una posibilidad de que puede entregar menos vecinos de los pedidos 
+Podemos ver que son exactamentes iguales.
 
 
 ------
