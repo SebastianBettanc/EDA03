@@ -16,11 +16,18 @@ El problema de los vecinos mas cercanos (KNN) en este problema se define como: D
   
   
   
-  Nuestro dataset P, en cada fila tendra 1 valor , este valor corresponde a:
+  Tendremos un dataset A ,cada fila estara compuesta de la siguiente forma:
   
-  •(ID,VECTOR_NORMALIZADO) 
+
+  ID  | VECTOR NO NORMALIZADO
+  ----|---------------------
+  "123468421"  |  Q
+  .|.
+  .|.
+  .|.
+  .|.
   
-  Para obtener los vectores normalizado primero tenemos que aplicar una funcion de normalizacion a un vector no normalizado, 
+
   
 Vector Q cualquiera no normalizado:
 
@@ -44,12 +51,21 @@ Q[13] 		   |Cantidad de capturas de pantallas por dispositivos			      |int 		  
 Q[14] 		   |Cantidad de lenguajes soportados								              |int 		  |0-75
 Q[15] 		   |Licencia Vpp activada 										                    |int 		  |0 o 1
 
+---------------------------------------------------------------
 
+Para generar el dataset P:
 
-
- El vector Q normalizado :
+  ID  | VECTOR NORMALIZADO
+  ----|---------------------
+  "123468421"  |  Q'
+  .|.
+  .|.
+  .|.
+  .|.
+          
+          
  
-Pos Vector Q |Valor
+Pos Vector Q' |Valor
 -------------|----------------------------------------------------------------------------------------------
 Q[0]| Bytes/4025969664.0
 Q[1]| Precio/299.99
