@@ -87,7 +87,7 @@ def lsh_knn(vector,ids,apps,alias,n): #1-distance_cos
 
 ############################################## ('1097482356'
 ##################### def variables########### 
-os.system('cls')
+
 
 k,dim,hash_lenght=7,12,300
 
@@ -98,10 +98,11 @@ app=get_app(apps,alias,'281656475')
 vector_id=normalizer.normalize_vector(app)#vector normal dada la id de la app
 vector=[0.03, 0.026, 0.007, 0.0001, 0.8, 0.9, 0.0, 0.31, 0.8, 1.0, 0.13, 1.0] #vector random # se puede reemplazar por vector_id para los vecinos
 #de un vector dado cualquiera
+os.system('cls')
 
 t1=timeit.default_timer()
-set_lsh=list(LSH.LSH(k,vector_id,hashTables,T_list)) #contiene una lista con "posibles vecinos"
-neighbours_lsh=lsh_knn(vector_id,set_lsh,apps,alias,10) #ordena la lista de "posibles vecinos" , por distancia y retorna los n mejores (para 10 vecinos, el % de falsos positivos es casi 0)
+set_lsh=list(LSH.LSH(k,vector_id,hashTables,T_list)) 
+neighbours_lsh=lsh_knn(vector_id,set_lsh,apps,alias,10) 
 t2=timeit.default_timer()
 print("tiempo de ejecucion para buscar vecinos en LSH: ",t2-t1," segundos")
 
@@ -110,9 +111,20 @@ neighbours_brute=brute_knn(vector_id,matrix,10)
 t4 = timeit.default_timer()
 print("tiempo de ejecucion para buscar vecinos por fuerza bruta : ",t4 - t3," segundos")
 
-
-print(neighbours_lsh)#impride id y distancia de vecinos por LSH
-print("")
-print(get_app (apps,alias,'1061610336'))
-
-###
+os.system('cls')
+print("Vecinos por lsh:",neighbours_lsh)#impride id y distancia de vecinos por LSH
+print("\n\n")
+print("Vecinos por fuerza bruta:",neighbours_brute)
+print("\n\n")
+#os.system('cls')
+#
+#print(get_app (apps,alias,'281656475')) 
+#
+#
+#print("\n\n\n")
+#os.system('cls')
+#
+#print(get_app (apps,alias,'PAC-MAN Premium')) 
+#
+#
+#print("\n\n\n")

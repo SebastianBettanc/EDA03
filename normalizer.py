@@ -21,7 +21,7 @@ def normalize_vector(vector_no_normalized): #dejar los valores entre 0 y 1 para 
     indices=[2,4,5,6,7,8,10,11,12,13,14,15]
     vector=list(vector_no_normalized[indices])
 
-    genre={"Book":(0.0), #Normalizar la vector 
+    genre={     "Book":(0.0), 
                 "Business":1/22.0,
                 "Catalogs":2/22.0,
                 "Education":3/22.0,
@@ -47,7 +47,10 @@ def normalize_vector(vector_no_normalized): #dejar los valores entre 0 y 1 para 
 
                 }
 
-    cont_rating={"12+":2.3/3.0,"17+":1.0,"4+":0.0,"9+":1.0/3.0}
+    cont_rating={"12+":2.3/3.0,
+                "17+":1.0,
+                "4+":0.0,
+                "9+":1.0/3.0}
 
 
     #size_bytes maximo 99992576 , para datos muy dispersos se ocupara dato/datomayor (retorna valores entre 0 y 1)
@@ -85,3 +88,5 @@ def normalize_matrix(matrix):
         data_normalized.append(value)    
 
     return data_normalized,apps,alias
+
+
