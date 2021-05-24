@@ -1,5 +1,6 @@
 # EDA03
-Nombre:Sebastian Bettancourt Villaseca Rut:19341715-9
+🟦Nombre:Sebastian Bettancourt Villaseca Rut:19341715-9
+
 
 Estructura de datos y algoritmos avanzados , Problema 3 estructuras espaciales
 
@@ -11,7 +12,8 @@ Correr el archivo main.py
 
 -----------------------------------------------------
 
-El problema de los vecinos mas cercanos (KNN) en este problema se define como: Dado un dataset P con N vectores en el, se construira una estructura de datos que dado cualquier vector Q, retorne el conjunto de vectores L, que sean cercanos a Q, esta estructura tiene que ser capaz de obtener los KNN sin comparar todas las distancias entre el vector Q y los N vectores de P.
+
+🟥El problema de los vecinos mas cercanos (KNN) en este problema se define como: Dado un dataset P con N vectores en el, se construira una estructura de datos que dado cualquier vector Q, retorne el conjunto de vectores L, que sean cercanos a Q, esta estructura tiene que ser capaz de obtener los KNN sin comparar todas las distancias entre el vector Q y los N vectores de P.
 
   
   
@@ -95,8 +97,8 @@ Para reducir el tiempo total y la memoria para encontrar los knn, para este prob
 
 ---------------------------------------------------
 
- ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
-Local sensitive hashing(LSH)
+ 
+🟩Local sensitive hashing(LSH)
 
 LSH consiste en utilizar tablas hash que contienen buckets, dentro de cada bucket se encuentran vectores similares entre si; Entonces para encontrar los knn de un vector E cualquiera , simplemente vamos al bucket donde se encuentra este vector y todos los vectores que se encuentren en el mismo bucket que el son vecinos de este. Para poder determinar los vectores que van en un mismo bucket L .
 
